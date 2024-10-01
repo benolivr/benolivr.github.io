@@ -11,8 +11,8 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
+    color: #000     ;
+    background-color: #efe8d4;
 }
 
 /* Container */
@@ -24,11 +24,11 @@ body {
 
 /* Header */
 header {
-    background: #50b3a2;
+    background: #70002e;
     color: #fff;
     padding-top: 30px;
     min-height: 70px;
-    border-bottom: #e8491d 3px solid;
+    border-bottom: #f9423a 5px solid;
 }
 
 header a {
@@ -64,9 +64,9 @@ header nav {
 /* Showcase */
 #showcase {
     min-height: 400px;
-    background: url('images/showcase.jpg') no-repeat 0 -400px;
+    background: #efe8d4;
     text-align: center;
-    color: #fff;
+    color: #ed8b00;
 }
 
 #showcase h1 {
@@ -86,7 +86,7 @@ section {
 
 /* Footer */
 footer {
-    background: #50b3a2;
+    background: #70002e;
     color: #fff;
     text-align: center;
     padding: 10px;
@@ -97,7 +97,7 @@ footer {
 .button {
     display: inline-block;
     color: #fff;
-    background: #e8491d;
+    background: #ed8b00;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
