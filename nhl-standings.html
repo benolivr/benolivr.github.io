@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NHL Standings | Ben Oliver</title>
+	<link rel="stylesheet" href="styles.css">
+	<style>
+		.standings-shell {
+			margin-top: 24px;
+			background: #fff9ec;
+			border: 1px solid #d8c9a4;
+			border-radius: 8px;
+			padding: 20px;
+		}
+
+		.standings-title {
+			color: #70002e;
+			margin-bottom: 8px;
+		}
+
+		.standings-subtitle {
+			color: #5a5a5a;
+			margin-bottom: 18px;
+		}
+
+		.points-legend {
+			margin-bottom: 16px;
+			background: #efe8d4;
+			border-left: 4px solid #ed8b00;
+			padding: 10px 12px;
+			border-radius: 4px;
+			font-size: 0.95rem;
+		}
+
+		.tabs {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin-bottom: 18px;
+		}
+
+		.tab-btn {
+			border: 1px solid #70002e;
+			background: #fff;
+			color: #70002e;
+			padding: 8px 14px;
+			border-radius: 999px;
+			cursor: pointer;
+			font-weight: bold;
+			transition: all 0.2s ease;
+		}
+
+		.tab-btn:hover,
+		.tab-btn:focus-visible {
+			background: #70002e;
+			color: #fff;
+			outline: none;
+		}
+
+		.tab-btn.active {
+			background: #70002e;
+			color: #fff;
+		}
+
+		.tab-panel {
+			display: none;
+		}
+
+		.tab-panel.active {
+			display: block;
+			animation: fadeInPanel 0.3s ease;
+		}
+
+		@keyframes fadeInPanel {
+			from { opacity: 0; transform: translateY(4px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		.panel-group-title {
+			margin: 18px 0 10px;
+			color: #70002e;
+			border-bottom: 2px solid #ed8b00;
+			display: inline-block;
+			padding-bottom: 2px;
+		}
+
+		.table-wrap {
+			overflow-x: auto;
+			margin-bottom: 16px;
+			border: 1px solid #d6d0bd;
+			border-radius: 6px;
+			background: #fff;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			min-width: 860px;
+		}
+
+		th,
+		td {
+			padding: 8px 10px;
+			text-align: left;
+			border-bottom: 1px solid #ece8dc;
+			white-space: nowrap;
+			font-size: 0.95rem;
+		}
+
+		th {
+			background: #70002e;
+			color: #fff;
+			position: sticky;
+			top: 0;
+			z-index: 1;
+		}
+
+		th.sortable {
+			cursor: pointer;
+			user-select: none;
+		}
+
+		th.sortable:hover {
+			background: #8a0038;
+		}
+
+		tbody tr:nth-child(even) {
+			background: #fffcf5;
+		}
+
+		.rank {
+			font-weight: bold;
+			color: #70002e;
+		}
+
+		.team-cell {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.team-logo {
+			width: 24px;
+			height: 24px;
+			object-fit: contain;
+			flex: 0 0 auto;
+		}
+
+		.playoff-spot {
+			background: #e6f3e6 !important;
+		}
+
+		.wildcard-spot {
+			background: #eaf3ff !important;
+		}
+
+		.eliminated-spot {
+			background: #fff2f2 !important;
+		}
+
+		.status-pill {
+			display: inline-block;
+			padding: 3px 8px;
+			border-radius: 999px;
+			font-size: 0.8rem;
+			font-weight: bold;
+		}
+
+		.status-pill.division {
+			background: #e6f3e6;
+			color: #1d6c1d;
+		}
+
+		.status-pill.wildcard {
+			background: #eaf3ff;
+			color: #174a9f;
+		}
+
+		.status-pill.out {
+			background: #ffe3e3;
+			color: #922020;
+		}
+
+		.status-cell {
+			font-weight: bold;
+		}
+
+		.standings-loading,
+		.standings-error {
+			padding: 12px;
+			border-radius: 6px;
+			margin-top: 10px;
+		}
+
+		.standings-loading {
+			background: #f5f5f5;
+		}
+
+		.standings-error {
+			background: #ffe8e8;
+			color: #7b1717;
+		}
+
+		@media (max-width: 768px) {
+			.standings-shell {
+				padding: 14px;
+			}
+
+			.tab-btn {
+				padding: 8px 10px;
+				font-size: 0.9rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<div id="branding">
+				<h1>Ben Oliver</h1>
+			</div>
+			<nav>
+				<ul>
+					<li><a href="index.html">Welcome</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="experience.html">Experience</a></li>
+					<li><a href="projects.html">Projects</a></li>
+					<li><a href="contact.html">Contact</a></li>
+					<li class="current"><a href="nhl-standings.html">NHL</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<section>
+		<div class="container standings-shell">
+			<h1 class="standings-title">NHL Standings</h1>
+			<p class="standings-subtitle" id="standings-date">Loading standings date...</p>
+			<div class="points-legend">
+				<strong>3-2-1-0 System:</strong>
+				3 pts for regulation win, 2 pts for OT/SO win, 1 pt for OT/SO loss, 0 pts for regulation loss.
+			</div>
+
+			<div class="tabs" role="tablist" aria-label="Standings Views">
+				<button class="tab-btn active" role="tab" aria-selected="true" aria-controls="overall-panel" id="overall-tab" data-tab="overall-panel">Overall</button>
+				<button class="tab-btn" role="tab" aria-selected="false" aria-controls="conference-panel" id="conference-tab" data-tab="conference-panel">Conference</button>
+				<button class="tab-btn" role="tab" aria-selected="false" aria-controls="division-panel" id="division-tab" data-tab="division-panel">Division</button>
+				<button class="tab-btn" role="tab" aria-selected="false" aria-controls="comparison-panel" id="comparison-tab" data-tab="comparison-panel">System Delta</button>
+			</div>
+
+			<div id="loading-state" class="standings-loading">Loading standings from standings.json...</div>
+			<div id="error-state" class="standings-error" style="display: none;"></div>
+
+			<div id="overall-panel" class="tab-panel active" role="tabpanel" aria-labelledby="overall-tab"></div>
+			<div id="conference-panel" class="tab-panel" role="tabpanel" aria-labelledby="conference-tab"></div>
+			<div id="division-panel" class="tab-panel" role="tabpanel" aria-labelledby="division-tab"></div>
+			<div id="comparison-panel" class="tab-panel" role="tabpanel" aria-labelledby="comparison-tab"></div>
+		</div>
+	</section>
+
+	<footer>
+		<p>Ben Oliver | 2026</p>
+		<div class="social-icons">
+			<a href="https://github.com/benolivr" target="_blank"><img src="images/github-icon.png" alt="GitHub" style="width:30px;height:30px;"></a>
+			<a href="https://discordapp.com/users/171664409242894336" target="_blank"><img src="images/discord.png" alt="Discord" style="width:30px;height:30px;"></a>
+			<a href="https://twitter.com/__duk" target="_blank"><img src="images/twitter-icon.png" alt="Twitter" style="width:30px;height:30px;"></a>
+			<a href="https://open.spotify.com/user/formerly_spicy" target="_blank"><img src="images/spotify-icon.webp" alt="Spotify" style="width:30px;height:30px;"></a>
+			<a href="https://steamcommunity.com/id/duk_" target="_blank"><img src="images/steam-icon.png" alt="Steam" style="width:30px;height:30px;"></a>
+			<a href="https://twitch.tv/theduk" target="_blank"><img src="images/twitch-icon.png" alt="Twitch" style="width:30px;height:30px;"></a>
+		</div>
+	</footer>
+
+	<script>
+		const sortState = {
+			overall: { key: "rankValue", direction: "asc" },
+			conference: { key: "rankValue", direction: "asc" },
+			division: { key: "rankValue", direction: "asc" },
+			comparison: { key: "rank3210", direction: "asc" }
+		};
+
+		let standingsTeams = [];
+		let tableSortingBound = false;
+
+		function toNum(value) {
+			return Number(value || 0);
+		}
+
+		function buildTeamRow(team) {
+			const regulationWins = toNum(team.regulationWins);
+			const totalWins = toNum(team.wins);
+			const otSoWins = Math.max(0, totalWins - regulationWins);
+			const otSoLosses = toNum(team.otLosses);
+			const regulationLosses = toNum(team.losses);
+			const points3210 = regulationWins * 3 + otSoWins * 2 + otSoLosses;
+			const points2210 = totalWins * 2 + otSoLosses;
+			const ptsPerGame = toNum(team.gamesPlayed) > 0 ? (points3210 / toNum(team.gamesPlayed)).toFixed(3) : "0.000";
+			const ptsPct = toNum(team.gamesPlayed) > 0 ? (points3210 / (toNum(team.gamesPlayed) * 3)) * 100 : 0;
+			const ptsPct2210 = toNum(team.gamesPlayed) > 0 ? (points2210 / (toNum(team.gamesPlayed) * 2)) * 100 : 0;
+
+			return {
+				...team,
+				regulationWins,
+				otSoWins,
+				otSoLosses,
+				regulationLosses,
+				points3210,
+				points2210,
+				ptsPerGame: Number(ptsPerGame),
+				ptsPct,
+				ptsPct2210,
+				goalDifferential: toNum(team.goalDifferential),
+				goalsFor: toNum(team.goalFor),
+				goalsAgainst: toNum(team.goalAgainst),
+				gamesPlayed: toNum(team.gamesPlayed),
+				conference: team.conferenceAbbrev,
+				division: team.divisionAbbrev,
+				conferenceName: team.conferenceName,
+				divisionName: team.divisionName,
+				teamName: team.teamName && team.teamName.default ? team.teamName.default : "Unknown Team",
+				teamAbbrev: team.teamAbbrev && team.teamAbbrev.default ? team.teamAbbrev.default : "---",
+				teamLogo: team.teamLogo || ""
+			};
+		}
+
+		function compareStandings(a, b) {
+			if (b.points3210 !== a.points3210) return b.points3210 - a.points3210;
+			if (b.regulationWins !== a.regulationWins) return b.regulationWins - a.regulationWins;
+			if (b.otSoWins !== a.otSoWins) return b.otSoWins - a.otSoWins;
+			if (b.goalDifferential !== a.goalDifferential) return b.goalDifferential - a.goalDifferential;
+			if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+			return a.teamName.localeCompare(b.teamName);
+		}
+
+		function compareStandingsBySystem(a, b, pointsKey) {
+			if (b[pointsKey] !== a[pointsKey]) return b[pointsKey] - a[pointsKey];
+			if (b.regulationWins !== a.regulationWins) return b.regulationWins - a.regulationWins;
+			if (b.wins !== a.wins) return b.wins - a.wins;
+			if (b.goalDifferential !== a.goalDifferential) return b.goalDifferential - a.goalDifferential;
+			if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+			return a.teamName.localeCompare(b.teamName);
+		}
+
+		function sortStandings(teams) {
+			return [...teams].sort(compareStandings);
+		}
+
+		function sortStandingsBySystem(teams, pointsKey) {
+			return [...teams].sort((a, b) => compareStandingsBySystem(a, b, pointsKey));
+		}
+
+		function sortByRequestedColumn(teams, panelKey) {
+			const state = sortState[panelKey];
+			if (!state || !state.key) {
+				return [...teams];
+			}
+
+			const direction = state.direction === "asc" ? 1 : -1;
+			return [...teams].sort((a, b) => {
+				const aVal = toNum(a[state.key]);
+				const bVal = toNum(b[state.key]);
+				if (aVal !== bVal) {
+					return (aVal - bVal) * direction;
+				}
+				return compareStandings(a, b);
+			});
+		}
+
+		function buildSortableHeader(label, key, panelKey) {
+			const state = sortState[panelKey] || { key: null, direction: "desc" };
+			const isActive = state.key === key;
+			const ariaSort = isActive ? (state.direction === "asc" ? "ascending" : "descending") : "none";
+			const indicator = isActive ? (state.direction === "asc" ? " ▲" : " ▼") : " ↕";
+			return "<th class=\"sortable\" data-panel-key=\"" + panelKey + "\" data-sort-key=\"" + key + "\" aria-sort=\"" + ariaSort + "\">" + label + indicator + "</th>";
+		}
+
+		function createTableHTML(teams, options = {}) {
+			const includeStatus = options.includeStatus === true;
+			const panelKey = options.panelKey || "overall";
+			let html = "<div class=\"table-wrap\"><table><thead><tr>";
+			html += buildSortableHeader("RK", "rankValue", panelKey) + "<th>Team</th>";
+			html += buildSortableHeader("GP", "gamesPlayed", panelKey);
+			html += buildSortableHeader("RW", "regulationWins", panelKey);
+			html += buildSortableHeader("OT/SO W", "otSoWins", panelKey);
+			html += buildSortableHeader("OT/SO L", "otSoLosses", panelKey);
+			html += buildSortableHeader("Reg L", "regulationLosses", panelKey);
+			html += "<th>PTS</th>";
+			html += buildSortableHeader("PTS%", "ptsPct", panelKey);
+			html += buildSortableHeader("GF", "goalsFor", panelKey);
+			html += buildSortableHeader("GA", "goalsAgainst", panelKey);
+			html += buildSortableHeader("GD", "goalDifferential", panelKey);
+			html += "<th>Streak</th>";
+			if (includeStatus) html += "<th>Status</th>";
+			html += "</tr></thead><tbody>";
+
+			teams.forEach((team, idx) => {
+				const streak = team.streakCode && team.streakCount ? (team.streakCode + team.streakCount) : "-";
+				const status = team.playoffStatus || "";
+				let rowClass = "";
+				let statusPill = "";
+
+				if (status === "division") {
+					rowClass = "playoff-spot";
+					statusPill = "<span class=\"status-pill division\">Division Spot</span>";
+				} else if (status === "wildcard") {
+					rowClass = "wildcard-spot";
+					statusPill = "<span class=\"status-pill wildcard\">Wild Card</span>";
+				} else if (status === "out") {
+					rowClass = "eliminated-spot";
+					statusPill = "<span class=\"status-pill out\">Out</span>";
+				}
+
+				html += "<tr class=\"" + rowClass + "\">";
+				html += "<td class=\"rank\">" + (team.rankValue || (idx + 1)) + "</td>";
+				html += "<td><div class=\"team-cell\">" +
+					(team.teamLogo ? "<img class=\"team-logo\" src=\"" + team.teamLogo + "\" alt=\"" + team.teamAbbrev + " logo\">" : "") +
+					"<span>" + team.teamName + " (" + team.teamAbbrev + ")</span></div></td>";
+				html += "<td>" + team.gamesPlayed + "</td>";
+				html += "<td>" + team.regulationWins + "</td>";
+				html += "<td>" + team.otSoWins + "</td>";
+				html += "<td>" + team.otSoLosses + "</td>";
+				html += "<td>" + team.regulationLosses + "</td>";
+				html += "<td><strong>" + team.points3210 + "</strong></td>";
+				html += "<td>" + team.ptsPct.toFixed(1) + "%</td>";
+				html += "<td>" + team.goalsFor + "</td>";
+				html += "<td>" + team.goalsAgainst + "</td>";
+				html += "<td>" + team.goalDifferential + "</td>";
+				html += "<td>" + streak + "</td>";
+				if (includeStatus) html += "<td class=\"status-cell\">" + statusPill + "</td>";
+				html += "</tr>";
+			});
+
+			html += "</tbody></table></div>";
+			return html;
+		}
+
+		function markWildCardStatus(conferenceTeams) {
+			const byDivision = {
+				A: sortStandings(conferenceTeams.filter((t) => t.division === "A")),
+				M: sortStandings(conferenceTeams.filter((t) => t.division === "M")),
+				C: sortStandings(conferenceTeams.filter((t) => t.division === "C")),
+				P: sortStandings(conferenceTeams.filter((t) => t.division === "P"))
+			};
+
+			const activeDivisions = Object.values(byDivision).filter((list) => list.length > 0);
+			const divisionQualifiers = activeDivisions.flatMap((list) => list.slice(0, 3));
+			const divisionSet = new Set(divisionQualifiers.map((team) => team.teamAbbrev));
+
+			const remaining = sortStandings(
+				conferenceTeams.filter((team) => !divisionSet.has(team.teamAbbrev))
+			);
+
+			const wildcardQualifiers = remaining.slice(0, 2);
+			const wildcardSet = new Set(wildcardQualifiers.map((team) => team.teamAbbrev));
+
+			return sortStandings(conferenceTeams).map((team) => {
+				if (divisionSet.has(team.teamAbbrev)) {
+					return { ...team, playoffStatus: "division" };
+				}
+				if (wildcardSet.has(team.teamAbbrev)) {
+					return { ...team, playoffStatus: "wildcard" };
+				}
+				return { ...team, playoffStatus: "out" };
+			});
+		}
+
+		function markWildCardStatusBySystem(conferenceTeams, pointsKey) {
+			const byDivision = {
+				A: sortStandingsBySystem(conferenceTeams.filter((t) => t.division === "A"), pointsKey),
+				M: sortStandingsBySystem(conferenceTeams.filter((t) => t.division === "M"), pointsKey),
+				C: sortStandingsBySystem(conferenceTeams.filter((t) => t.division === "C"), pointsKey),
+				P: sortStandingsBySystem(conferenceTeams.filter((t) => t.division === "P"), pointsKey)
+			};
+
+			const activeDivisions = Object.values(byDivision).filter((list) => list.length > 0);
+			const divisionQualifiers = activeDivisions.flatMap((list) => list.slice(0, 3));
+			const divisionSet = new Set(divisionQualifiers.map((team) => team.teamAbbrev));
+
+			const remaining = sortStandingsBySystem(
+				conferenceTeams.filter((team) => !divisionSet.has(team.teamAbbrev)),
+				pointsKey
+			);
+
+			const wildcardQualifiers = remaining.slice(0, 2);
+			const wildcardSet = new Set(wildcardQualifiers.map((team) => team.teamAbbrev));
+
+			return sortStandingsBySystem(conferenceTeams, pointsKey).map((team) => {
+				if (divisionSet.has(team.teamAbbrev)) return { ...team, playoffStatus: "division" };
+				if (wildcardSet.has(team.teamAbbrev)) return { ...team, playoffStatus: "wildcard" };
+				return { ...team, playoffStatus: "out" };
+			});
+		}
+
+		function formatStatusLabel(status) {
+			if (status === "division") return "Division";
+			if (status === "wildcard") return "Wild Card";
+			return "Out";
+		}
+
+		function getRWGCellStyleByRange(value, minValue, maxValue) {
+			if (maxValue === minValue) {
+				return "";
+			}
+
+			const normalized = (value - minValue) / (maxValue - minValue);
+			if (normalized <= 0.5) {
+				const towardWhite = normalized / 0.5;
+				const alpha = (0.52 - towardWhite * 0.42).toFixed(3);
+				return "background-color: rgba(220, 38, 38, " + alpha + ");";
+			}
+
+			const towardGreen = (normalized - 0.5) / 0.5;
+			const alpha = (0.10 + towardGreen * 0.45).toFixed(3);
+			return "background-color: rgba(0, 170, 90, " + alpha + ");";
+		}
+
+		function statusClassFromValue(status) {
+			if (status === "division") return "playoff-spot";
+			if (status === "wildcard") return "wildcard-spot";
+			return "eliminated-spot";
+		}
+
+		function setDateLabel(dateString) {
+			const dateEl = document.getElementById("standings-date");
+			if (!dateString) {
+				dateEl.textContent = "Standings date unavailable";
+				return;
+			}
+
+			const parsed = new Date(dateString);
+			if (Number.isNaN(parsed.getTime())) {
+				dateEl.textContent = "Standings date: " + dateString;
+				return;
+			}
+
+			dateEl.textContent = "Standings as of " + parsed.toLocaleString();
+		}
+
+		function renderOverall(teams) {
+			const panel = document.getElementById("overall-panel");
+			const rankedTeams = sortStandings(teams).map((team, index) => ({ ...team, rankValue: index + 1 }));
+			panel.innerHTML = createTableHTML(sortByRequestedColumn(rankedTeams, "overall"), { includeStatus: true, panelKey: "overall" });
+		}
+
+		function renderConference(teams) {
+			const panel = document.getElementById("conference-panel");
+			const eastRanked = sortStandings(teams.filter((t) => t.conference === "E")).map((team, index) => ({ ...team, rankValue: index + 1 }));
+			const westRanked = sortStandings(teams.filter((t) => t.conference === "W")).map((team, index) => ({ ...team, rankValue: index + 1 }));
+			const east = sortByRequestedColumn(eastRanked, "conference");
+			const west = sortByRequestedColumn(westRanked, "conference");
+
+			panel.innerHTML =
+				"<h2 class=\"panel-group-title\">Eastern Conference</h2>" + createTableHTML(east, { includeStatus: true, panelKey: "conference" }) +
+				"<h2 class=\"panel-group-title\">Western Conference</h2>" + createTableHTML(west, { includeStatus: true, panelKey: "conference" });
+		}
+
+		function renderDivision(teams) {
+			const panel = document.getElementById("division-panel");
+			const divisions = [
+				{ code: "A", name: "Atlantic" },
+				{ code: "M", name: "Metropolitan" },
+				{ code: "C", name: "Central" },
+				{ code: "P", name: "Pacific" }
+			];
+
+			panel.innerHTML = divisions.map((division) => {
+				const rankedRows = sortStandings(teams.filter((t) => t.division === division.code)).map((team, index) => ({ ...team, rankValue: index + 1 }));
+				const rows = sortByRequestedColumn(rankedRows, "division");
+				return "<h2 class=\"panel-group-title\">" + division.name + " Division</h2>" + createTableHTML(rows, { includeStatus: true, panelKey: "division" });
+			}).join("");
+		}
+
+		function renderSystemDelta(teams) {
+			const panel = document.getElementById("comparison-panel");
+			const rows = sortByRequestedColumn(teams, "comparison");
+			const improvementValues = rows.map((team) => team.standingsImprovement);
+			const ptsPctChangeValues = rows.map((team) => team.ptsPctChange);
+			const minImprovement = Math.min(...improvementValues);
+			const maxImprovement = Math.max(...improvementValues);
+			const minPtsPctChange = Math.min(...ptsPctChangeValues);
+			const maxPtsPctChange = Math.max(...ptsPctChangeValues);
+			let html = "<h2 class=\"panel-group-title\">3-2-1-0 vs 2-2-1-0 Comparison</h2>";
+			html += "<div class=\"table-wrap\"><table><thead><tr>";
+			html += buildSortableHeader("RK", "rank3210", "comparison");
+			html += buildSortableHeader("Real RK", "rank2210", "comparison");
+			html += "<th>Team</th>";
+			html += buildSortableHeader("Standings Improvement", "standingsImprovement", "comparison");
+			html += buildSortableHeader("3-2-1-0 PTS%", "ptsPct", "comparison");
+			html += buildSortableHeader("2-2-1-0 PTS%", "ptsPct2210", "comparison");
+			html += buildSortableHeader("PTS% Change", "ptsPctChange", "comparison");
+			html += "<th>Status</th><th>Real Status</th>";
+			html += "</tr></thead><tbody>";
+
+			rows.forEach((team) => {
+				const improvement = team.standingsImprovement;
+				const improvementPrefix = improvement > 0 ? "+" : "";
+				const improvementStyle = getRWGCellStyleByRange(improvement, minImprovement, maxImprovement);
+				const ptsPctChange = team.ptsPctChange;
+				const ptsPctChangePrefix = ptsPctChange > 0 ? "+" : "";
+				const ptsPctChangeStyle = getRWGCellStyleByRange(ptsPctChange, minPtsPctChange, maxPtsPctChange);
+				html += "<tr>";
+				html += "<td class=\"rank\">" + team.rank3210 + "</td>";
+				html += "<td class=\"rank\">" + team.rank2210 + "</td>";
+				html += "<td><div class=\"team-cell\">" +
+					(team.teamLogo ? "<img class=\"team-logo\" src=\"" + team.teamLogo + "\" alt=\"" + team.teamAbbrev + " logo\">" : "") +
+					"<span>" + team.teamName + " (" + team.teamAbbrev + ")</span></div></td>";
+				html += "<td style=\"" + improvementStyle + "\">" + improvementPrefix + improvement + "</td>";
+				html += "<td>" + team.ptsPct.toFixed(1) + "%</td>";
+				html += "<td>" + team.ptsPct2210.toFixed(1) + "%</td>";
+				html += "<td style=\"" + ptsPctChangeStyle + "\">" + ptsPctChangePrefix + ptsPctChange.toFixed(1) + "%</td>";
+                html += "<td class=\"status-cell " + statusClassFromValue(team.playoffStatus) + "\">" + formatStatusLabel(team.playoffStatus) + "</td>";
+				html += "<td class=\"status-cell " + statusClassFromValue(team.playoffStatus2210) + "\">" + formatStatusLabel(team.playoffStatus2210) + "</td>";
+				html += "</tr>";
+			});
+
+			html += "</tbody></table></div>";
+			panel.innerHTML = html;
+		}
+
+		function renderAllPanels() {
+			renderOverall(standingsTeams);
+			renderConference(standingsTeams);
+			renderDivision(standingsTeams);
+			renderSystemDelta(standingsTeams);
+		}
+
+		function toggleSort(panelKey, sortKey) {
+			const state = sortState[panelKey];
+			if (!state) {
+				return;
+			}
+
+			if (state.key === sortKey) {
+				state.direction = state.direction === "desc" ? "asc" : "desc";
+			} else {
+				state.key = sortKey;
+				state.direction = "desc";
+			}
+		}
+
+		function setupTabs() {
+			const buttons = document.querySelectorAll(".tab-btn");
+			const panels = document.querySelectorAll(".tab-panel");
+
+			buttons.forEach((button) => {
+				button.addEventListener("click", () => {
+					const targetId = button.getAttribute("data-tab");
+
+					buttons.forEach((btn) => {
+						btn.classList.remove("active");
+						btn.setAttribute("aria-selected", "false");
+					});
+
+					panels.forEach((panel) => {
+						panel.classList.remove("active");
+					});
+
+					button.classList.add("active");
+					button.setAttribute("aria-selected", "true");
+					document.getElementById(targetId).classList.add("active");
+				});
+			});
+		}
+
+		function setupTableSorting() {
+			if (tableSortingBound) {
+				return;
+			}
+
+			document.addEventListener("click", (event) => {
+				const header = event.target.closest("th.sortable");
+				if (!header) {
+					return;
+				}
+
+				const panelKey = header.getAttribute("data-panel-key");
+				const sortKey = header.getAttribute("data-sort-key");
+				if (!panelKey || !sortKey) {
+					return;
+				}
+
+				toggleSort(panelKey, sortKey);
+				renderAllPanels();
+			});
+
+			tableSortingBound = true;
+		}
+
+		async function loadStandings() {
+			const loadingState = document.getElementById("loading-state");
+			const errorState = document.getElementById("error-state");
+
+			try {
+				const response = await fetch("standings.json", { cache: "no-store" });
+				if (!response.ok) {
+					throw new Error("Unable to load standings.json (HTTP " + response.status + ")");
+				}
+
+				const data = await response.json();
+				const standings = Array.isArray(data.standings) ? data.standings : [];
+				const teams = standings.map(buildTeamRow);
+				const eastWithStatus = markWildCardStatus(teams.filter((t) => t.conference === "E"));
+				const westWithStatus = markWildCardStatus(teams.filter((t) => t.conference === "W"));
+				const byAbbrev3210 = new Map([...eastWithStatus, ...westWithStatus].map((team) => [team.teamAbbrev, team.playoffStatus]));
+
+				const east2210 = markWildCardStatusBySystem(teams.filter((t) => t.conference === "E"), "points2210");
+				const west2210 = markWildCardStatusBySystem(teams.filter((t) => t.conference === "W"), "points2210");
+				const byAbbrev2210 = new Map([...east2210, ...west2210].map((team) => [team.teamAbbrev, team.playoffStatus]));
+
+				const rank3210Map = new Map(sortStandingsBySystem(teams, "points3210").map((team, index) => [team.teamAbbrev, index + 1]));
+				const rank2210Map = new Map(sortStandingsBySystem(teams, "points2210").map((team, index) => [team.teamAbbrev, index + 1]));
+
+				standingsTeams = teams.map((team) => ({
+					...team,
+					playoffStatus: byAbbrev3210.get(team.teamAbbrev) || "out",
+					playoffStatus2210: byAbbrev2210.get(team.teamAbbrev) || "out",
+					rank3210: rank3210Map.get(team.teamAbbrev) || 0,
+					rank2210: rank2210Map.get(team.teamAbbrev) || 0,
+					standingsImprovement: (rank2210Map.get(team.teamAbbrev) || 0) - (rank3210Map.get(team.teamAbbrev) || 0),
+					ptsPctChange: team.ptsPct - team.ptsPct2210
+				}));
+
+				setDateLabel(data.standingsDateTimeUtc || data.date || "");
+				renderAllPanels();
+				setupTabs();
+				setupTableSorting();
+				loadingState.style.display = "none";
+			} catch (err) {
+				loadingState.style.display = "none";
+				errorState.style.display = "block";
+				errorState.textContent = "Could not load standings.json. If you are testing locally, run a static server (for example: python3 -m http.server) and open this page through http://localhost.";
+				console.error(err);
+			}
+		}
+
+		loadStandings();
+	</script>
+</body>
+</html>
