@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0c">
+    <title>Hockey Career Simulator · v2</title>
+    <meta name="description" content="Hockey career simulator. Create a player, sign for real clubs from the NHL to the SHL, and chase Olympic gold.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏒</text></svg>">
+    <link rel="stylesheet" href="./hockeysim-files/fonts.css?v=2a82c65aec">
+    <link rel="stylesheet" href="./hockeysim-files/header.css?v=2a82c65aec">
+    <link rel="stylesheet" href="./hockeysim-files/careersim.css?v=2a82c65aec">
+    <!-- Two designs for the career screen: one per shape of screen. -->
+    <link rel="stylesheet" href="./hockeysim-files/desktop.css?v=2a82c65aec" media="(min-width: 1000px)">
+    <link rel="stylesheet" href="./hockeysim-files/phone.css?v=2a82c65aec" media="(max-width: 999.98px)">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="global-header">
+    <nav class="navbar-main">
+        <span class="brand">Hockey Career <span>Sim</span> 🏒</span>
+        <div class="nav-actions">
+            <button class="motion-toggle" id="achBtn" type="button" aria-label="Achievements">🏅<span> Achievements</span></button>
+            <button class="motion-toggle" id="motionToggle" type="button" aria-pressed="false">Low motion</button>
+        </div>
+    </nav>
+</header>
+
+
+<main class="sim-page" id="main">
+
+    <section class="sim-shell">
+
+        <!-- ================= VIEW 1 · PLAYER =================
+             One set of pieces, two layouts (desktop.css, phone.css): the
+             desktop shows every section at once; the phone stacks them,
+             opens nationality and favourite team as bottom sheets and
+             pins Start under your thumb. -->
+        <div class="sim-view is-active" id="view-player">
+            <div class="setup-body setup-create">
+                <div class="creator">
+
+                    <!-- The player you're making, updated as you go -->
+                    <section class="cr-preview stagger">
+                        <span class="setup-eyebrow">Create your player</span>
+                        <div class="jersey-box">
+                            <svg viewBox="0 18 240 214" class="jersey-svg dressed" id="jerseySvg" style="--j-primary: #b22234; --j-secondary: #3c3b6e;">
+                                <!-- The back of a home jersey (same cut as the career screen's, see jerseyHtml) -->
+                                <defs>
+                                    <clipPath id="jClip"><path d="M92 28 Q120 42 148 28 L182 36 Q214 46 226 78 L236 150 L200 158 L186 104 L186 226 L54 226 L54 104 L40 158 L4 150 L14 78 Q26 46 58 36 Z"></path></clipPath>
+                                    <linearGradient id="jShadeV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"></stop><stop offset=".45" stop-color="#fff" stop-opacity="0"></stop><stop offset="1" stop-color="#000" stop-opacity=".22"></stop></linearGradient>
+                                    <linearGradient id="jShadeH" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".28"></stop><stop offset=".25" stop-color="#000" stop-opacity="0"></stop><stop offset=".75" stop-color="#000" stop-opacity="0"></stop><stop offset="1" stop-color="#000" stop-opacity=".28"></stop></linearGradient>
+                                </defs>
+                                <g clip-path="url(#jClip)">
+                                    <rect class="j-body" x="0" y="0" width="240" height="240"></rect>
+                                    <polygon class="j-accent" points="8.4,118.32 7.9,121.92 45.46,136.94 46.16,134.24"></polygon><polygon class="j-accent" points="231.6,118.32 232.1,121.92 194.54,136.94 193.84,134.24"></polygon><polygon class="j-trim" points="7.9,121.92 6.4,132.72 43.36,145.04 45.46,136.94"></polygon><polygon class="j-trim" points="232.1,121.92 233.6,132.72 196.64,145.04 194.54,136.94"></polygon><polygon class="j-accent" points="6.4,132.72 5.9,136.32 42.66,147.74 43.36,145.04"></polygon><polygon class="j-accent" points="233.6,132.72 234.1,136.32 197.34,147.74 196.64,145.04"></polygon>
+                                    <rect class="j-accent" x="0" y="182" width="240" height="5"></rect>
+                                    <rect class="j-trim" x="0" y="187" width="240" height="17"></rect>
+                                    <rect class="j-accent" x="0" y="204" width="240" height="5"></rect>
+                                    <path class="j-trim" d="M88 26 Q120 40 152 26 L152 34 Q120 48 88 34 Z"></path>
+                                    <path d="M54 104 L60 178 M186 104 L180 178" stroke="#000" stroke-opacity=".18" stroke-width="3" fill="none"></path>
+                                    <rect x="0" y="0" width="240" height="240" fill="url(#jShadeH)"></rect>
+                                    <rect x="0" y="0" width="240" height="240" fill="url(#jShadeV)"></rect>
+                                </g>
+                                <path d="M92 28 Q120 42 148 28 L182 36 Q214 46 226 78 L236 150 L200 158 L186 104 L186 226 L54 226 L54 104 L40 158 L4 150 L14 78 Q26 46 58 36 Z" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="2.5" stroke-linejoin="round"></path>
+                                <text id="jerseyName" class="jersey-name" x="120" y="84" text-anchor="middle">LAST NAME</text>
+                                <text id="jerseyNumber" class="jersey-number" x="120" y="160" text-anchor="middle">00</text>
+                            </svg>
+                            <div class="jersey-flag" id="jerseyFlag"></div>
+                        </div>
+                        <div class="cr-card">
+                            <span class="cr-name" id="prevName">LAST NAME</span>
+                            <div class="cr-chips" id="prevChips"></div>
+                        </div>
+                    </section>
+
+                    <section class="cr-sec cr-identity stagger">
+                        <span class="c-label">Identity</span>
+                        <div class="field">
+                            <label for="lastNameInput">Last name</label>
+                            <div class="inp-wrap">
+                                <span class="inp-ico">A</span>
+                                <input type="text" id="lastNameInput" class="inp" placeholder="Ovechkin" maxlength="10" autocomplete="off">
+                                <span class="inp-hint" id="nameCount">0/10</span>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field">
+                                <label for="numberInput">Number</label>
+                                <div class="inp-wrap">
+                                    <span class="inp-ico">#</span>
+                                    <input type="text" id="numberInput" class="inp" inputmode="numeric" pattern="[0-9]*" maxlength="2" placeholder="00" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label id="handLabel">Shoots</label>
+                                <div class="seg">
+                                    <span class="seg-slider" id="segSlider"></span>
+                                    <button class="seg-btn" data-hand="left" type="button">Left</button>
+                                    <button class="seg-btn" data-hand="right" type="button">Right</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="cr-sec cr-position stagger">
+                        <span class="c-label">Position</span>
+                        <div class="rink">
+                            <svg class="rink-svg" viewBox="0 0 170 400" aria-hidden="true">
+                                <!-- An NHL rink to scale: 85 by 200 feet, 2 units a foot -->
+                                <rect class="ice" x="1" y="1" width="168" height="398" rx="56"></rect>
+                                <line class="line-goal" x1="13" y1="22" x2="157" y2="22"></line>
+                                <line class="line-goal" x1="13" y1="378" x2="157" y2="378"></line>
+                                <line class="line-blue" x1="1" y1="150" x2="169" y2="150"></line>
+                                <line class="line-blue" x1="1" y1="250" x2="169" y2="250"></line>
+                                <line class="line-red" x1="1" y1="200" x2="169" y2="200"></line>
+                                <circle class="circ" cx="85" cy="200" r="30"></circle>
+                                <circle class="dot" cx="85" cy="200" r="2"></circle>
+                                <circle class="circ" cx="41" cy="62" r="30"></circle>
+                                <circle class="circ" cx="129" cy="62" r="30"></circle>
+                                <circle class="circ" cx="41" cy="338" r="30"></circle>
+                                <circle class="circ" cx="129" cy="338" r="30"></circle>
+                                <circle class="dot" cx="41" cy="62" r="2"></circle>
+                                <circle class="dot" cx="129" cy="62" r="2"></circle>
+                                <circle class="dot" cx="41" cy="338" r="2"></circle>
+                                <circle class="dot" cx="129" cy="338" r="2"></circle>
+                                <circle class="dot" cx="41" cy="160" r="2"></circle>
+                                <circle class="dot" cx="129" cy="160" r="2"></circle>
+                                <circle class="dot" cx="41" cy="240" r="2"></circle>
+                                <circle class="dot" cx="129" cy="240" r="2"></circle>
+                                <path class="crease" d="M73 22 a12 12 0 0 0 24 0 Z"></path>
+                                <path class="crease" d="M73 378 a12 12 0 0 1 24 0 Z"></path>
+                                <rect class="goal" x="79" y="15" width="12" height="7" rx="2"></rect>
+                                <rect class="goal" x="79" y="378" width="12" height="7" rx="2"></rect>
+                            </svg>
+                            <button class="rink-pos" data-pos="LW" type="button" style="left:20%;top:20%"><b>LW</b><span>Left W.</span></button>
+                            <button class="rink-pos" data-pos="C" type="button" style="left:50%;top:13%"><b>C</b><span>Center</span></button>
+                            <button class="rink-pos" data-pos="RW" type="button" style="left:80%;top:20%"><b>RW</b><span>Right W.</span></button>
+                            <button class="rink-pos" data-pos="D" type="button" style="left:50%;top:63%"><b>D</b><span>Defense</span></button>
+                            <button class="rink-pos" data-pos="G" type="button" style="left:50%;top:88%"><b>G</b><span>Goalie</span></button>
+                        </div>
+                    </section>
+
+                    <section class="cr-sec cr-nation stagger">
+                        <span class="c-label">Nationality</span>
+                        <button type="button" class="pick-row" id="nationPick" data-sheet="nationSheet">Choose a country</button>
+                        <div class="sheet" id="nationSheet" role="dialog" aria-label="Nationality">
+                            <div class="sheet-head"><b>Nationality</b><button type="button" class="sheet-close" aria-label="Close">×</button></div>
+                            <div class="inp-wrap">
+                                <span class="inp-ico">⌕</span>
+                                <input type="text" id="nationSearch" class="inp" placeholder="Search country..." autocomplete="off">
+                            </div>
+                            <div id="nationGrid" class="nation-list"></div>
+                        </div>
+                        <label class="ban-toggle" title="The IIHF has suspended Russia and Belarus from its events since 2022">
+                            <input type="checkbox" id="iihfBan" checked> Russia and Belarus suspended from IIHF events (since 2022)
+                        </label>
+                    </section>
+
+                    <section class="cr-sec cr-fav stagger">
+                        <span class="c-label">Favourite team</span>
+                        <span class="field-hint">A little better every year, and keener to draft you</span>
+                        <button type="button" class="pick-row" id="favPick" data-sheet="favSheet">None</button>
+                        <div class="sheet" id="favSheet" role="dialog" aria-label="Favourite team">
+                            <div class="sheet-head"><b>Favourite team</b><button type="button" class="sheet-close" aria-label="Close">×</button></div>
+                            <div class="fav-grid" id="favGrid"></div>
+                        </div>
+                    </section>
+
+                    <!-- Not inside an animated section: on the phone this bar is position:fixed -->
+                    <div class="cr-start">
+                        <div class="start-row">
+                            <button id="dailyBtn" class="btn-daily" type="button">Career of the day</button>
+                            <button id="startBtn" class="btn-primary" type="button">Start career</button>
+                        </div>
+                        <p class="daily-note" id="dailyNote" hidden></p>
+                    </div>
+                </div>
+                <div class="sheet-scrim"></div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 2 · CAREER =================
+             One set of pieces, two layouts (desktop.css, phone.css):
+             the desktop shows the player, the stage and one side panel
+             at once; the phone shows one tab at a time. -->
+        <div class="sim-view" id="view-career">
+            <div class="cv" id="cv" data-tab="play">
+
+                <!-- The player: a full card on desktop, a slim bar on the phone -->
+                <aside class="cv-player player-panel">
+                    <div class="panel-crest" id="panelCrest"></div>
+                    <div class="panel-veil"></div>
+
+                    <div class="panel-inner">
+                        <div class="panel-top">
+                            <div class="ovr-badge" id="ovrBadge">
+                                <span class="ovr-label">OVR</span>
+                                <span class="ovr-value" id="ovrValue">50</span>
+                            </div>
+                            <div class="panel-id">
+                                <div class="panel-chips">
+                                    <span class="chip" id="chipNation">🏳️ —</span>
+                                    <span class="chip chip-pos" id="chipPos">—</span>
+                                    <span class="chip chip-role" id="chipRole"></span>
+                                </div>
+                                <div class="panel-name" id="panelName">—</div>
+                                <div class="panel-age"><span id="ageValue">16</span> yrs</div>
+                            </div>
+                            <div class="panel-jersey" id="panelJersey"></div>
+                        </div>
+
+                        <div class="club-block">
+                            <div class="club-line">
+                                <div class="crest-slot sm" id="clubCrest"></div>
+                                <span class="club-name" id="clubName">No team</span>
+                            </div>
+                            <div class="league-line">
+                                <div class="crest-slot xs" id="leagueCrest"></div>
+                                <span class="league-name" id="leagueName">Looking for a club…</span>
+                                <span class="league-country" id="leagueCountry"></span>
+                            </div>
+                        </div>
+
+                        <div class="value-row">
+                            <span class="value-key" id="valueKey">Salary</span>
+                            <span class="value-main">
+                                <span id="valueText">—</span>
+                                <span class="value-delta" id="valueDelta"></span>
+                            </span>
+                        </div>
+
+                        <div class="totals-bar" id="totalsBar"></div>
+                        <div class="badge-row" id="badgeRow"></div>
+                        <div class="panel-chart" id="panelChart"></div>
+
+                        <div class="shelf-box">
+                            <span class="box-label">Trophy case</span>
+                            <div class="trophy-shelf" id="trophyShelf">
+                                <span class="shelf-empty">No titles yet</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- The stage: every decision, season preview and recap -->
+                <main class="cv-stage">
+                    <div class="dock" id="dock"></div>
+                </main>
+
+                <nav class="cv-tabs" role="tablist" aria-label="Career sections">
+                    <button type="button" class="tab-btn" data-tab="play" role="tab" aria-selected="true">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+                        <span class="lbl-phone">Play</span><span class="lbl-desk">Play</span>
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="history" role="tab" aria-selected="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M6 16l4-5 3 3 5-7" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span class="lbl-phone">Career</span><span class="lbl-desk">History</span>
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="league" role="tab" aria-selected="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 10h14M5 15h9M5 20h6" fill="none" stroke-width="2.2" stroke-linecap="round"/></svg>
+                        <span class="lbl-phone">League</span><span class="lbl-desk">League</span>
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="nation" role="tab" aria-selected="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4M6 5h11l-2.5 3.5L17 12H6" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span class="lbl-phone">Nation</span><span class="lbl-desk">National team</span>
+                    </button>
+                </nav>
+
+                <section class="cv-panel" id="panel-history">
+                    <div class="history-head" id="historyHead"></div>
+                    <div class="history-rows" id="historyRows"></div>
+                </section>
+
+                <section class="cv-panel" id="panel-league">
+                    <div class="lg-bar">
+                        <label class="box-label" for="leagueSelect">League</label>
+                        <select id="leagueSelect" class="lg-select"></select>
+                    </div>
+                    <div class="lg-view" id="leagueView" data-view="strength" role="group" aria-label="League view">
+                        <button type="button" data-view="strength" aria-pressed="true">Strength</button>
+                        <button type="button" data-view="table" aria-pressed="false">Standings</button>
+                    </div>
+                    <div class="lg-table" id="leagueTable"></div>
+                </section>
+
+                <section class="cv-panel" id="panel-nation">
+                    <!-- Off until the first call-up -->
+                    <div class="nt-strip off" id="ntStrip">
+                        <div class="nts-left">
+                            <div class="nts-flag" id="ntsFlag"></div>
+                            <div class="nts-id">
+                                <span class="nts-title" id="ntsTitle">National team</span>
+                            </div>
+                        </div>
+                        <div class="nts-stats" id="ntsStats"></div>
+                        <div class="nts-medals" id="ntsMedals"></div>
+                    </div>
+                    <div class="nt-runs" id="ntRuns"></div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 3 · SUMMARY ================= -->
+        <div class="sim-view" id="view-summary">
+            <div class="summary-body" id="summaryBody"></div>
+        </div>
+
+    </section>
+
+    <p class="legal-note">Club and league names and references are used for identification purposes only within this simulation. This platform is not affiliated with, sponsored by, or endorsed by the clubs mentioned, unless expressly stated otherwise.</p>
+
+</main>
+
+<!-- defer: doesn't block painting, and runs in order. The build stamps every local file with one
+     ?v= hash of their contents, so a browser never mixes old and new files. -->
+<script defer="" src="./hockeysim-files/leagues.js?v=2a82c65aec"></script>
+<script defer="" src="./hockeysim-files/crests.js?v=2a82c65aec"></script>
+<!-- The game: built from v2/src by tools/build.js (npm run build). -->
+<script defer="" src="./hockeysim-files/game.js?v=2a82c65aec"></script>
+
+</body>
+</html>

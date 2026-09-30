@@ -1,0 +1,238 @@
+/* =========================================================
+   phone.css | THE CAREER SCREEN ON A PHONE (any narrow screen)
+   An app, not a squeezed dashboard: a slim player bar pinned under
+   the header, one full-screen tab at a time (Play, Career, League,
+   Nation) and a tab bar under your thumb. The page scrolls; the
+   pieces inside it don't. Loaded only below 1000px (see the <link>).
+   ========================================================= */
+
+/* Every view flows with the page on a narrow screen. */
+.sim-shell { height:auto; min-height:0; }
+.sim-view { position:relative; inset:auto; }
+.sim-view:not(.is-active) { display:none; }
+.setup-body { overflow:visible; justify-content:flex-start; }
+.summary-body { overflow:visible; }
+
+/* Views fade in without moving: a transform would drag the pinned
+   bars (tab bar, Start, the summary's actions) along while it runs. */
+.sim-view.enter { animation:fadeIn .3s ease both; }
+.sim-view.leave { animation:none; }
+
+/* =========================================================
+   SETUP · a stacked form with the player on top
+   Nationality and favourite team open as bottom sheets; Start and
+   Career of the day are pinned under your thumb.
+   ========================================================= */
+.sim-page:has(#view-player.is-active) { padding-bottom:calc(84px + env(safe-area-inset-bottom)); }
+.setup-create { padding:2px 0 8px; gap:0; }
+.creator { display:flex; flex-direction:column; gap:10px; }
+/* No entrance animation here: an animated section becomes its own stacking
+   context and containing block, trapping its fixed sheet under the scrim. */
+.creator .stagger { animation:none; }
+.cr-preview { padding:4px 0 2px; }
+.cr-preview .jersey-box { padding:2px 0 4px; }
+.cr-preview .jersey-svg { max-width:170px; }
+.cr-sec { padding:13px; gap:10px; }
+.cr-position .rink { width:230px; max-width:100%; align-self:center; aspect-ratio:17/40; }
+.rink-pos { width:58px; height:46px; }
+.inp { font-size:16px; padding:12px 13px 12px 30px; }   /* iOS zooms in on anything smaller */
+#numberInput { font-size:16px; }
+.seg-btn { padding:11px 4px; font-size:.85rem; }
+
+.cr-start { position:fixed; left:0; right:0; bottom:0; z-index:950;
+            padding:9px 12px calc(9px + env(safe-area-inset-bottom));
+            background:hsl(240 10% 6% / .97); border-top:1px solid var(--line);
+            backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+.cr-start .start-row { flex-wrap:nowrap; gap:8px; }
+.cr-start .btn-daily { flex:0 0 auto; padding:13px 14px; }
+.cr-start .btn-primary { flex:1; padding:14px 10px; font-size:.95rem; }
+.cr-start .daily-note { position:absolute; left:10px; right:10px; bottom:100%; margin:0 0 8px;
+                        padding:9px 12px; border-radius:12px; background:hsl(240 10% 10%);
+                        border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+
+/* The sheets: pinned to the bottom, most of the screen tall. */
+.sheet { position:fixed; left:0; right:0; bottom:0; z-index:1200; max-height:84dvh; height:84dvh;
+         padding:14px 14px calc(14px + env(safe-area-inset-bottom)); border-radius:18px 18px 0 0;
+         background:hsl(240 10% 9%); border-top:1px solid var(--line);
+         box-shadow:0 -18px 40px rgba(0,0,0,.55);
+         transform:translateY(105%); visibility:hidden;
+         transition:transform .32s cubic-bezier(.22,1,.36,1), visibility 0s linear .32s; }
+.sheet.open { transform:none; visibility:visible; transition:transform .32s cubic-bezier(.22,1,.36,1); }
+.sheet .nation-list { flex:1; max-height:none; min-height:0; }
+.sheet .nat { padding:11px 10px; }
+.sheet .nat-name { font-size:.9rem; }
+.fav-grid { flex:1; min-height:0; overflow-y:auto; grid-template-columns:1fr; gap:3px; }
+.fav-opt { padding:9px 10px; }
+.fav-opt b { width:38px; flex-shrink:0; color:var(--fg-mute); }
+.fav-opt span:not(.crest-slot):not(.ini) { font-size:.9rem; }
+.sheet-open .sheet-scrim { display:block; position:fixed; inset:0; z-index:1100; background:rgba(0,0,0,.6); }
+body.sheet-open { overflow:hidden; }
+
+/* =========================================================
+   SUMMARY · one section at a time
+   The hero stays on top, section tabs pin under the header, and the
+   share / play again actions sit in a bar at the bottom.
+   ========================================================= */
+.sim-page:has(#view-summary.is-active) { padding-bottom:calc(84px + env(safe-area-inset-bottom)); }
+.sum-shell > .sum-rail { animation:none; }
+.sum-shell:not([data-sec="overview"]) .sum-bands { display:none; }
+.sum-shell:not([data-sec="overview"]) .sp-chip:nth-of-type(n+3) { display:none; }   /* a compact hero off Overview */
+.sum-tabs { display:flex; gap:4px; padding:4px; position:sticky; top:var(--header-h); z-index:50;
+            background:hsl(240 10% 7% / .97); border:1px solid var(--line); border-radius:12px;
+            backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.sum-tab[aria-selected="true"] { color:var(--accent); }
+.sum-sec { display:none; }
+.sum-shell[data-sec="overview"] .sum-sec[data-sec="overview"],
+.sum-shell[data-sec="seasons"] .sum-sec[data-sec="seasons"],
+.sum-shell[data-sec="honours"] .sum-sec[data-sec="honours"],
+.sum-shell[data-sec="clubs"] .sum-sec[data-sec="clubs"] { display:flex; }
+.sum-actions { position:fixed; left:0; right:0; bottom:0; z-index:950;
+               display:grid; grid-template-columns:repeat(4, minmax(0,1fr)) 1.4fr; gap:4px;
+               padding:7px 8px calc(7px + env(safe-area-inset-bottom));
+               background:hsl(240 10% 6% / .97); border-top:1px solid var(--line);
+               backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+.sum-actions .act-btn { flex-direction:column; justify-content:center; gap:2px; min-height:52px; padding:6px 2px;
+                        border:0; border-radius:12px; background:transparent; font-size:.7rem; }
+.sum-actions .act-btn.act-primary { background:var(--fg); color:#0a0a0c; }
+.act-msg { position:fixed; left:50%; bottom:calc(78px + env(safe-area-inset-bottom)); transform:translateX(-50%);
+           z-index:960; pointer-events:none; white-space:nowrap; padding:8px 14px; border-radius:999px;
+           background:hsl(240 10% 12%); border:1px solid var(--line); }
+
+/* The career screen drops the card frame: it is the whole screen. */
+.sim-page:has(#view-career.is-active) { padding:0 0 calc(76px + env(safe-area-inset-bottom)); }
+.sim-page:has(#view-career.is-active) .legal-note { display:none; }
+.sim-shell:has(#view-career.is-active) { background:transparent; border:0; border-radius:0; overflow:visible; }
+#view-career { padding:0; overflow:visible; }   /* or the sticky player bar sticks to the view, not the page */
+
+.cv { display:flex; flex-direction:column; }
+.cv-stage, .cv-panel { display:none; }
+.cv[data-tab="play"] .cv-stage { display:flex; }
+.cv[data-tab="history"] #panel-history,
+.cv[data-tab="league"] #panel-league,
+.cv[data-tab="nation"] #panel-nation { display:flex; }
+
+/* ---------- The player bar ----------
+   Two lines, pinned: badge | name, age / club, role. On the Career tab
+   it opens up into the full card (salary, totals, chart, trophies). */
+.cv-player { position:sticky; top:var(--header-h); z-index:60; border-radius:0; padding:8px 14px;
+             background:hsl(240 10% 9% / .97); border-bottom:1px solid var(--line);
+             backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.cv:not([data-tab="history"]) .panel-inner { display:grid; grid-template-columns:auto minmax(0,1fr) auto;
+                                              column-gap:11px; row-gap:1px; align-items:center; }
+.cv:not([data-tab="history"]) .panel-top,
+.cv:not([data-tab="history"]) .panel-id { display:contents; }
+.cv:not([data-tab="history"]) .ovr-badge { grid-column:1; grid-row:1 / span 2; width:48px; height:48px; border-radius:12px; }
+.cv:not([data-tab="history"]) .ovr-value { font-size:1.4rem; }
+.cv:not([data-tab="history"]) .ovr-label { margin-bottom:0; }
+.cv:not([data-tab="history"]) .panel-name { grid-column:2; grid-row:1; font-size:1rem; }
+.cv:not([data-tab="history"]) .panel-age { grid-column:3; grid-row:1; text-align:right; }
+.cv:not([data-tab="history"]) .club-block { grid-column:2; grid-row:2; padding:0; border:0; }
+.cv:not([data-tab="history"]) .club-name { font-size:.8rem; font-weight:700; color:var(--fg-dim); }
+.cv:not([data-tab="history"]) .crest-slot.sm { width:18px; height:18px; }
+.cv:not([data-tab="history"]) .panel-chips { grid-column:3; grid-row:2; justify-content:flex-end; }
+.cv:not([data-tab="history"]) .panel-chips .chip:not(.chip-role),
+.cv:not([data-tab="history"]) .league-line,
+.cv:not([data-tab="history"]) .value-row,
+.cv:not([data-tab="history"]) .totals-bar,
+.cv:not([data-tab="history"]) .panel-chart,
+.cv:not([data-tab="history"]) .shelf-box { display:none; }
+
+.cv[data-tab="history"] .cv-player { position:relative; top:auto; padding:14px; }
+.cv[data-tab="history"] .trophy-shelf { max-height:none; }
+
+/* ---------- The stage ---------- */
+.cv-stage { flex-direction:column; padding:16px 14px 20px;
+            min-height:calc(100dvh - var(--header-h) - 66px - 76px - env(safe-area-inset-bottom)); }
+.cv-stage .dock { flex:1; background:transparent; border-radius:0; padding:0; gap:14px; }
+.cv-stage .dock-head { gap:4px; }
+.cv-stage .dock-title { font-size:1.3rem; letter-spacing:-.02em; }
+.cv-stage .dock-sub { font-size:.86rem; line-height:1.45; }
+.cv-stage .dock-flash { font-size:1.05rem; line-height:1.4; padding:0 8px; }
+
+/* Choices are full-width cards, stacked, big enough for a thumb. */
+.cv-stage .dock-options, .cv-stage .dock-options.two { flex:0 0 auto; grid-template-columns:1fr; gap:10px; }
+.cv-stage .opt { align-items:stretch; text-align:left; gap:6px; padding:14px; border-radius:14px; min-height:64px; }
+.cv-stage .opt-name { font-size:.98rem; }
+.cv-stage .opt-effect { justify-content:flex-start; font-size:.74rem; padding:6px 10px; }
+.cv-stage .opt-odds.safe { justify-content:flex-start; }
+/* A club card: crest on the left, the details stacked beside it. */
+.cv-stage .opt:has(> .crest-slot) {
+    display:grid; grid-template-columns:52px minmax(0,1fr) auto; column-gap:12px; row-gap:3px; align-items:center;
+    grid-template-areas:"crest kicker pay" "crest name pay" "crest league scout" "note note note"; }
+.cv-stage .opt:has(> .crest-slot) .crest-slot { grid-area:crest; width:52px; height:52px; }
+.cv-stage .opt:has(> .crest-slot) .opt-kicker { grid-area:kicker; }
+.cv-stage .opt:has(> .crest-slot) .opt-name { grid-area:name; }
+.cv-stage .opt:has(> .crest-slot) .opt-league { grid-area:league; justify-content:flex-start; }
+.cv-stage .opt:has(> .crest-slot) .opt-scout { grid-area:scout; text-align:right; }
+.cv-stage .opt:has(> .crest-slot) .opt-pay { grid-area:pay; }
+.cv-stage .opt:has(> .crest-slot) .opt-effect { grid-area:note; margin-top:5px; }
+
+.cv-stage .outlook { padding:12px; }
+.cv-stage .ol-cells { grid-template-columns:repeat(2, minmax(0,1fr)); }
+.cv-stage .ol-link { padding:4px 0; }
+.cv-stage .recap-top { flex-direction:column; align-items:stretch; }
+.cv-stage .recap-ovr { flex-direction:row; justify-content:center; gap:10px; }
+.cv-stage .recap-stats b { font-size:1.25rem; }
+.cv-stage .recap-next, .cv-stage .po-continue, .cv-stage .po-next { flex:0 0 auto; align-self:stretch; justify-content:center; min-height:50px; font-size:.86rem; }
+.cv-stage .po-bgrid { max-height:none; grid-auto-columns:minmax(128px, 1fr); }
+.cv-stage .wheel-stage { width:120px; height:120px; }
+.cv-stage .net-stage { min-height:170px; }
+.cv-stage .net-svg { max-height:none; }
+.cv-stage .shot-btn { padding:15px 8px; font-size:.9rem; min-height:54px; }
+
+/* ---------- The tab bar ---------- */
+.cv-tabs { position:fixed; left:0; right:0; bottom:0; z-index:950;
+           display:grid; grid-template-columns:repeat(4, 1fr);
+           padding:6px 6px calc(6px + env(safe-area-inset-bottom));
+           background:hsl(240 10% 6% / .97); border-top:1px solid var(--line);
+           backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+.tab-btn { position:relative; display:flex; flex-direction:column; align-items:center; gap:4px;
+           padding:7px 0 5px; background:none; border:0; border-radius:10px;
+           color:var(--fg-mute); font-size:.7rem; font-weight:800; -webkit-tap-highlight-color:transparent; }
+.tab-btn svg { width:22px; height:22px; }
+.tab-btn[aria-selected="true"] { color:var(--accent); }
+.tab-btn:active { background:rgba(255,255,255,.05); }
+.lbl-desk { display:none; }
+/* Something is waiting on the stage while you're in another tab. */
+.tab-btn.ping::after { content:""; position:absolute; top:5px; left:calc(50% + 9px); width:9px; height:9px;
+                       border-radius:50%; background:var(--accent); box-shadow:0 0 0 2px hsl(240 10% 6%);
+                       animation:blink 1.2s ease-in-out infinite; }
+
+/* ---------- The other tabs ---------- */
+.cv-panel { flex-direction:column; padding:14px 12px 18px; }
+/* History: only the seasons played, taller rows. */
+.h-row.future { display:none; }
+.history-rows { gap:4px; }
+.h-row { flex:0 0 auto; min-height:42px; }
+.history-row-inner { min-height:42px; }
+.history-head, .history-row-inner { grid-template-columns:30px minmax(0,1fr) 30px repeat(var(--stats,3), 31px); gap:4px; }
+.h-club > span { font-size:.8rem; }
+.h-detail { padding-left:12px; font-size:.78rem; }
+
+.lg-select { font-size:16px; }   /* iOS zooms in on anything smaller */
+.lg-row { grid-template-columns:22px 26px minmax(0,1fr) auto; padding:9px 10px; }
+.lg-row .meter { display:none; }
+.lg-name { font-size:.84rem; }
+
+.nt-strip { grid-template-columns:auto minmax(0,1fr); gap:8px; }
+.nts-medals { grid-column:1 / -1; justify-content:flex-start; }
+
+@media (max-width: 380px) {
+    .history-head, .history-row-inner { grid-template-columns:24px minmax(0,1fr) 27px repeat(var(--stats,3), 27px); gap:3px; }
+    .h-club > span { font-size:.74rem; }
+    .cv-stage { padding:14px 10px 18px; }
+}
+
+/* The jersey: hidden in the slim bar, beside the badge on the Career tab. */
+.cv:not([data-tab="history"]) .panel-jersey { display:none; }
+.cv[data-tab="history"] .panel-top { position:relative; }
+.cv[data-tab="history"] .panel-jersey { position:absolute; top:0; right:0; width:70px; }
+.cv-stage .body-map { width:78px; }
+.cv-stage .opt-quick { min-height:64px; }
+.ach-grid { grid-template-columns:1fr; }
+
+/* Badges: hidden in the slim bar, on the card in the Career tab. */
+.cv:not([data-tab="history"]) .badge-row { display:none; }
+.pg { grid-template-columns:26px 72px minmax(0,1fr); }
+.pg-rival { grid-column:2 / -1; }
+.around { grid-template-columns:1fr; }
