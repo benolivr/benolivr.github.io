@@ -72,6 +72,7 @@ header ul {
 
 header li {
     display: inline;
+    white-space: nowrap;
     padding: 0 20px 0 20px;
 }
 

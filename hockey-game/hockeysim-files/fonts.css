@@ -1,0 +1,7 @@
+/* Inter, served locally: one variable font covers every weight the page uses (400-900). */
+@font-face {
+  font-family: 'Inter';
+  src: url(../assets/fonts/InterVariable.woff2) format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}

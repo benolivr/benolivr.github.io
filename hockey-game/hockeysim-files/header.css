@@ -1,0 +1,79 @@
+/* =========================================
+   header.css | PAGE BASE AND HEADER
+   ========================================= */
+
+:root {
+    --bg-color: #080a0f;
+    --text-primary: #ffffff;
+    --neon-blue: #00f2ff;
+    --neon-blue-glow: rgba(0, 242, 255, 0.4);
+    --header-h: 64px;
+    color-scheme: dark;   /* native scrollbars and controls */
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Fixed layer only for the gradient */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-image: radial-gradient(circle at top, #111827 0%, var(--bg-color) 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Accessibility: skip to content and visible focus */
+.skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 3000;
+    background: var(--neon-blue); color: #041418;
+    padding: 12px 20px; font-weight: 800; border-radius: 0 0 10px 0;
+    text-decoration: none;
+}
+.skip-link:focus { left: 0; }
+.global-header :focus-visible { outline: 2px solid var(--neon-blue); outline-offset: 3px; border-radius: 6px; }
+
+.global-header {
+    background-color: rgba(10, 14, 23, 0.98);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    height: var(--header-h);
+    display: flex; align-items: center;
+    position: sticky; top: 0; z-index: 1000;
+}
+
+.navbar-main {
+    width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; box-sizing: border-box;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand {
+    font-size: 1.6rem; font-weight: 900; color: #fff; letter-spacing: -1px;
+    text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+}
+.brand span { color: var(--neon-blue); }
+
+/* Header buttons: achievements, low motion */
+.nav-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+/* The low-motion switch */
+.motion-toggle {
+    flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px;
+    background: transparent; color: #cfd6e0; border: 1px solid rgba(255, 255, 255, .14); border-radius: 999px;
+    padding: 7px 12px; font-family: inherit; font-size: .72rem; font-weight: 800; cursor: pointer;
+}
+.motion-toggle[aria-pressed="true"] { border-color: var(--neon-blue); color: var(--neon-blue); }
+
+@media (max-width: 560px) {
+    :root { --header-h: 54px; }
+    .navbar-main { padding: 0 .75rem; }
+    .brand { font-size: clamp(.95rem, 5vw, 1.3rem); letter-spacing: -.5px; }
+    .motion-toggle { padding: 6px 10px; font-size: .64rem; }
+    #achBtn span { display: none; }
+}
