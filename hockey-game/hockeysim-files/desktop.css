@@ -35,7 +35,7 @@
 .cr-start { grid-area:start; display:flex; flex-direction:column; justify-content:center; gap:8px; }
 .cr-start .start-row { flex-direction:column; align-items:stretch; }
 .cr-start .btn-primary { padding:15px; font-size:1rem; }
-.cr-start .daily-note { margin:0; font-size:.72rem; }
+.cr-start .daily-note, .cr-start .start-note { margin:0; font-size:.72rem; }
 
 /* Pickers are simply open here: no rows, no sheet chrome. */
 .pick-row, .sheet-head { display:none; }
@@ -52,14 +52,16 @@
 
 /* =========================================================
    SUMMARY · a career report
-   A sticky rail (who, the numbers, share and play again) beside every
-   section at once, in a two-column grid.
+   A sticky rail (who, the numbers, share and play again) beside the
+   section tabs and the one section showing, in a two-column grid.
    ========================================================= */
 .summary-body { padding:4px 6px 4px 2px; }
 .sum-shell { display:grid; grid-template-columns:340px minmax(0,1fr); gap:16px; align-items:start;
              max-width:1280px; margin:0 auto; }
 .replay-banner { grid-column:1 / -1; }
 .sum-rail { position:sticky; top:0; max-height:calc(100dvh - var(--header-h) - 76px); overflow-y:auto; gap:8px; }
+/* The rail scrolls; its cards keep their height (a shrunk hero card clipped its own content). */
+.sum-rail > * { flex-shrink:0; }
 .sum-rail::-webkit-scrollbar { width:4px; }
 .sum-rail::-webkit-scrollbar-thumb { background:hsl(240 5% 25%); border-radius:4px; }
 .sum-rail .sum-hero { flex-wrap:wrap; gap:12px; padding:14px; }
@@ -81,6 +83,13 @@
 .sum-actions .act-btn { justify-content:center; padding:11px 10px; }
 .sum-actions .act-primary { grid-column:1 / -1; padding:14px; font-size:.86rem; }
 
+/* The tabs head the right-hand column, above the one section showing; the rail spans both rows. */
+.sum-rail { grid-column:1; grid-row:span 2; }
+/* The rail's extra height goes to the section's row (1fr), not the tabs' (or a short section drops below a gap). */
+.sum-shell { grid-template-rows:auto 1fr; }
+.sum-shell:has(> .replay-banner) { grid-template-rows:auto auto 1fr; }
+.sum-tabs, .sum-main { grid-column:2; }
+.sum-tabs { position:sticky; top:0; z-index:5; }
 .sum-main { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px; }
 .sum-sec { display:contents; }
 .sum-main .sum-card.wide, .sum-main .sum-clubs-grid { grid-column:1 / -1; }
@@ -126,7 +135,7 @@
 .cv-stage .dock > * { width:100%; max-width:780px; margin-left:auto; margin-right:auto; }
 .cv-stage .dock > :first-child { margin-top:auto; }
 .cv-stage .dock > :last-child { margin-bottom:auto; }
-.cv-stage .dock > .recap-next, .cv-stage .dock > .po-continue { width:auto; min-width:200px; }
+.cv-stage .dock .recap-next, .cv-stage .dock .po-continue { width:auto; min-width:200px; }
 
 .cv-stage .dock-head { gap:6px; }
 .cv-stage .dock-title { font-size:1.6rem; letter-spacing:-.025em; }
