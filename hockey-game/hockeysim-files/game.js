@@ -121,10 +121,10 @@
                 <div class="recap-ovr">
                     <div class="ovr-badge ${ya(e.ovr)}"><span class="ovr-label">OVR</span><span class="ovr-value">${e.ovr}</span></div>
                     ${r?`<span class="recap-delta${i>0?" up":i<0?" down":""}">${i>0?`\u25B2 ${i}`:i<0?`\u25BC ${-i}`:"No change"}</span>`:""}
-                    ${Om(e,r)}
                 </div>
                 <div class="recap-stats">${c.map(([g,f])=>`<div><b>${f}</b><span>${g}</span></div>`).join("")}</div>
             </div>
+            ${Om(e,r)}
             ${Es(o)?`<p class="recap-line small">${x(Es(o))}</p>`:""}
             ${pa(e)||e.bracket?`<div class="recap-team">${pa(e)?`<span>${x(pa(e))}</span>`:""}${fc(e)}</div>`:""}
             ${u?`<div class="recap-goal ${u.met?"hit":"miss"}">
