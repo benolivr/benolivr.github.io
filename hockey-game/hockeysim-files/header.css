@@ -60,7 +60,7 @@ body::before {
 }
 .brand span { color: var(--neon-blue); }
 
-/* Header buttons: achievements, low motion */
+/* Header buttons: achievements, game speed, low motion */
 .nav-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; }
 /* The low-motion switch */
 .motion-toggle {
@@ -73,7 +73,8 @@ body::before {
 @media (max-width: 560px) {
     :root { --header-h: 54px; }
     .navbar-main { padding: 0 .75rem; }
-    .brand { font-size: clamp(.95rem, 5vw, 1.3rem); letter-spacing: -.5px; }
-    .motion-toggle { padding: 6px 10px; font-size: .64rem; }
-    #achBtn span { display: none; }
+    .brand { font-size: clamp(.85rem, 4.2vw, 1.3rem); letter-spacing: -.5px; }
+    .nav-actions { gap: 6px; }
+    .motion-toggle { padding: 6px 9px; font-size: .64rem; }
+    #achBtn span, #paceBtn span { display: none; }
 }
