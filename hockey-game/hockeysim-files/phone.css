@@ -129,6 +129,7 @@ body.sheet-open { overflow:hidden; }
 .cv:not([data-tab="history"]) .totals-bar,
 .cv:not([data-tab="history"]) .totals-cap,
 .cv:not([data-tab="history"]) .panel-scout,
+.cv:not([data-tab="history"]) .panel-first,
 .cv:not([data-tab="history"]) .panel-chart,
 .cv:not([data-tab="history"]) .shelf-box { display:none; }
 
