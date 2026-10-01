@@ -340,6 +340,11 @@
 
 .panel-name { font-size:1.15rem; font-weight:900; letter-spacing:-.02em;
               overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+/* The first name, small above the last (see setFirstName): the player card and the final screen. */
+.panel-first, .sp-first { display:block; font-size:.8rem; font-weight:700; color:var(--fg-dim); letter-spacing:.01em;
+                          overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.panel-first { margin-bottom:-2px; }
+.field-opt { font-weight:600; text-transform:none; letter-spacing:0; color:var(--fg-mute); margin-left:4px; }
 .panel-age { font-size:.76rem; color:var(--fg-dim); font-weight:600; }
 .panel-scout::before { content:" · "; color:var(--fg-dim); }
 .panel-scout { color:var(--fg); font-weight:700; }

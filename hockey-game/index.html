@@ -7,12 +7,12 @@
     <title>Hockey Career Simulator · v2</title>
     <meta name="description" content="Hockey career simulator. Create a player, sign for real clubs from the NHL to the SHL, and chase Olympic gold.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏒</text></svg>">
-    <link rel="stylesheet" href="./hockeysim-files/fonts.css?v=089b55b36a">
-    <link rel="stylesheet" href="./hockeysim-files/header.css?v=089b55b36a">
-    <link rel="stylesheet" href="./hockeysim-files/careersim.css?v=089b55b36a">
+    <link rel="stylesheet" href="./hockeysim-files/fonts.css?v=6454546f9a">
+    <link rel="stylesheet" href="./hockeysim-files/header.css?v=6454546f9a">
+    <link rel="stylesheet" href="./hockeysim-files/careersim.css?v=6454546f9a">
     <!-- Two designs for the career screen: one per shape of screen. -->
-    <link rel="stylesheet" href="./hockeysim-files/desktop.css?v=089b55b36a" media="(min-width: 1000px)">
-    <link rel="stylesheet" href="./hockeysim-files/phone.css?v=089b55b36a" media="(max-width: 999.98px)">
+    <link rel="stylesheet" href="./hockeysim-files/desktop.css?v=6454546f9a" media="(min-width: 1000px)">
+    <link rel="stylesheet" href="./hockeysim-files/phone.css?v=6454546f9a" media="(max-width: 999.98px)">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -78,11 +78,19 @@
                     <section class="cr-sec cr-identity stagger">
                         <h2 class="c-label">Identity</h2>
                         <div class="field">
+                            <label for="firstNameInput">First name <span class="field-opt">optional</span></label>
+                            <div class="inp-wrap">
+                                <span class="inp-ico" aria-hidden="true">A</span>
+                                <input type="text" id="firstNameInput" class="inp" placeholder="Alex" maxlength="20" autocomplete="off" aria-describedby="firstNameCount">
+                                <span class="inp-hint" id="firstNameCount">0/20</span>
+                            </div>
+                        </div>
+                        <div class="field">
                             <label for="lastNameInput">Last name</label>
                             <div class="inp-wrap">
                                 <span class="inp-ico" aria-hidden="true">A</span>
-                                <input type="text" id="lastNameInput" class="inp" placeholder="Ovechkin" maxlength="10" autocomplete="off" aria-describedby="nameCount">
-                                <span class="inp-hint" id="nameCount">0/10</span>
+                                <input type="text" id="lastNameInput" class="inp" placeholder="Ovechkin" maxlength="20" autocomplete="off" aria-describedby="nameCount">
+                                <span class="inp-hint" id="nameCount">0/20</span>
                             </div>
                         </div>
                         <div class="field-row">
@@ -208,6 +216,7 @@
                                     <span class="chip chip-next" id="chipNext" hidden></span>
                                     <span class="chip chip-tax" id="chipTax" hidden></span>
                                 </div>
+                                <div class="panel-first" id="panelFirst" hidden></div>
                                 <div class="panel-name" id="panelName">—</div>
                                 <div class="panel-age"><span id="ageValue">16</span> yrs<span class="panel-scout" id="scoutRead" title="The scouts' read of how good you'll get. It firms up as you age." hidden></span></div>
                             </div>
@@ -321,10 +330,10 @@
 
 <!-- defer: doesn't block painting, and runs in order. The build stamps every local file with one
      ?v= hash of their contents, so a browser never mixes old and new files. -->
-<script defer="" src="./hockeysim-files/leagues.js?v=089b55b36a"></script>
-<script defer="" src="./hockeysim-files/crests.js?v=089b55b36a"></script>
+<script defer="" src="./hockeysim-files/leagues.js?v=6454546f9a"></script>
+<script defer="" src="./hockeysim-files/crests.js?v=6454546f9a"></script>
 <!-- The game: built from v2/src by tools/build.js (npm run build). -->
-<script defer="" src="./hockeysim-files/game.js?v=089b55b36a"></script>
+<script defer="" src="./hockeysim-files/game.js?v=6454546f9a"></script>
 
 </body>
 </html>
