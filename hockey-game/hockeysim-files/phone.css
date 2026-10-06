@@ -154,12 +154,13 @@ body.sheet-open { overflow:hidden; }
 /* A club card: crest on the left, the details stacked beside it. */
 .cv-stage .opt:has(> .crest-slot) {
     display:grid; grid-template-columns:52px minmax(0,1fr) auto; column-gap:12px; row-gap:3px; align-items:center;
-    grid-template-areas:"crest kicker pay" "crest name pay" "crest league scout" "note note note"; }
+    grid-template-areas:"crest kicker pay" "crest name scout" "crest league scout2" "note note note"; }
 .cv-stage .opt:has(> .crest-slot) .crest-slot { grid-area:crest; width:52px; height:52px; }
 .cv-stage .opt:has(> .crest-slot) .opt-kicker { grid-area:kicker; }
 .cv-stage .opt:has(> .crest-slot) .opt-name { grid-area:name; }
 .cv-stage .opt:has(> .crest-slot) .opt-league { grid-area:league; justify-content:flex-start; }
 .cv-stage .opt:has(> .crest-slot) .opt-scout { grid-area:scout; text-align:right; }
+.cv-stage .opt:has(> .crest-slot) .opt-scout + .opt-scout { grid-area:scout2; }
 .cv-stage .opt:has(> .crest-slot) .opt-pay { grid-area:pay; }
 .cv-stage .opt:has(> .crest-slot) .opt-effect { grid-area:note; margin-top:5px; }
 
