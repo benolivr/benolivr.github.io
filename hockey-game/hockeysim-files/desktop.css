@@ -98,11 +98,12 @@
 
 #view-career { padding:14px; }
 .cv { flex:1; min-height:0; display:grid; gap:14px;
-      grid-template-columns:300px minmax(0,1fr) minmax(360px,31%);
+      grid-template-columns:280px minmax(0,1fr) minmax(360px,31%);
       grid-template-rows:auto minmax(0,1fr);
       grid-template-areas:"player stage tabs" "player stage panel"; }
 @media (min-width: 1400px) {
-    .cv { grid-template-columns:320px minmax(0,1fr) 440px; }
+    .cv { grid-template-columns:300px minmax(0,1fr) 380px; }
+    .cv .cv-stage .recap-stats b { font-size:2rem; }
 }
 
 /* ---------- The player ---------- */
@@ -119,10 +120,15 @@
 .cv-player .crest-slot.sm { width:34px; height:34px; }
 .cv-player .totals-bar { padding-top:10px; }
 .cv-player .tot-v { font-size:1.05rem; }
+/* The rail's small print, a step up from the phone's. */
+.cv-player .totals-cap, .cv-player .box-label, .cv-player .tot-k, .cv-player .value-key,
+.cv-player .chip { font-size:.76rem; }
 .cv-player .panel-chart { padding-top:4px; }
 .cv-player .shelf-box { flex:1; min-height:70px; display:flex; flex-direction:column;
                         background:rgba(0,0,0,.2); border:1px solid rgba(255,255,255,.05); }
 .cv-player .trophy-shelf { flex:1; min-height:0; max-height:none; align-content:flex-start; }
+/* Nothing won yet: a one-line box, not a tall empty one. */
+.cv-player .shelf-box:has(.shelf-empty) { flex:0 0 auto; min-height:0; }
 
 /* ---------- The stage ---------- */
 .cv-stage { grid-area:stage; min-height:0; display:flex; overflow:hidden;
@@ -130,31 +136,32 @@
             border:1px solid var(--line); border-radius:var(--r); }
 .cv-stage .dock { flex:1; min-height:0; overflow-y:auto; background:transparent; border-radius:0;
                   padding:28px clamp(20px, 3vw, 44px); gap:16px; }
-/* One reading column, centred up and down when it fits (auto margins
-   collapse to 0 when it doesn't, so nothing gets cut off at the top). */
-.cv-stage .dock > * { width:100%; max-width:780px; margin-left:auto; margin-right:auto; }
-.cv-stage .dock > :first-child { margin-top:auto; }
-.cv-stage .dock > :last-child { margin-bottom:auto; }
+/* One reading column from the top, level with the two side columns:
+   centred up and down, a short decision floated in empty space. */
+.cv-stage .dock { padding-top:clamp(28px, 6vh, 64px); }
+.cv-stage .dock > * { width:100%; max-width:720px; margin-left:auto; margin-right:auto; }
 .cv-stage .dock .recap-next, .cv-stage .dock .po-continue { width:auto; min-width:200px; }
 
 .cv-stage .dock-head { gap:6px; }
-.cv-stage .dock-title { font-size:1.6rem; letter-spacing:-.025em; }
-.cv-stage .dock-sub { font-size:.92rem; line-height:1.45; }
+.cv-stage .dock-kicker { font-size:.8rem; }
+.cv-stage .dock-title { font-size:2rem; letter-spacing:-.03em; }
+.cv-stage .dock-sub { font-size:1rem; line-height:1.5; }
 .cv-stage .dock-flash { font-size:1.2rem; max-width:620px; line-height:1.4; }
 .cv-stage .dock-status { font-size:.9rem; }
 
-.cv-stage .dock-options { flex:0 0 auto; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:12px; }
+.cv-stage .dock-options { flex:0 0 auto; grid-template-columns:repeat(auto-fit, minmax(165px, 1fr)); gap:12px; }
 .cv-stage .opt { min-height:176px; padding:16px 12px 14px; gap:9px; border-radius:16px; }
-.cv-stage .opt-name { font-size:1.02rem; }
-.cv-stage .opt-kicker, .cv-stage .opt-league, .cv-stage .opt-scout { font-size:.74rem; }
-.cv-stage .opt-effect { font-size:.74rem; padding:6px 8px; }
+.cv-stage .opt-name { font-size:1.1rem; }
+.cv-stage .opt-kicker, .cv-stage .opt-league, .cv-stage .opt-scout { font-size:.78rem; }
+.cv-stage .opt-effect { font-size:.8rem; padding:7px 9px; }
 .cv-stage .opt .crest-slot.lg { width:76px; height:76px; }
 .cv-stage .dock-options.goals { grid-template-columns:repeat(3, minmax(0,1fr)); }   /* one row: safe, stretch, moonshot */
 .cv-stage .opt-goal { min-height:150px; justify-content:center; }
 .cv-stage .opt-goal .opt-name { font-size:1.15rem; }
 
 .cv-stage .outlook { padding:16px; }
-.cv-stage .recap-stats b { font-size:1.7rem; }
+.cv-stage .recap-stats b { font-size:clamp(1.15rem, 1.9vw, 1.7rem); }   /* five numbers fit a narrow stage */
+.cv-stage .recap-stats span, .cv-stage .recap-part { font-size:.76rem; }
 .cv-stage .recap-ovr .ovr-badge { width:78px; height:78px; border-radius:18px; }
 .cv-stage .recap-ovr .ovr-value { font-size:2.2rem; }
 
