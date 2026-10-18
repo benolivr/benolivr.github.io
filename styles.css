@@ -1,211 +1,122 @@
-/* styles.css */
+/* styles.css: shared by every page (the hockey game has its own). */
 
-/* Reset some default browser styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --maroon: #70002e;
+    --red: #f9423a;
+    --orange: #ed8b00;
+    --cream: #efe8d4;
+    --paper: #fff9ec;
+    --ink: #1f1a17;
+    --muted: #5e5650;
+    --rule: #d8c9a4;
+    --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Body styling */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #000     ;
-    background-color: #efe8d4;
-    padding-top: 100px;
+    font: 18px/1.6 var(--serif);
+    color: var(--ink);
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Container */
-.container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-}
+a { color: var(--maroon); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--red); }
+img { max-width: 100%; height: auto; display: block; }
 
-[class*="container"] {
-    opacity: 0;
-    animation: fadeIn 1s forwards;
-}
+/* Two widths: prose stays readable, grids and the standings table get more room. */
+.container { width: min(64rem, 100% - 32px); margin: 0 auto; }
+.prose { max-width: 40rem; }
+/* The standings table needs about 1120px before it has to scroll. */
+.container.standings-shell { width: min(76rem, 100% - 32px); }
 
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
-}
-
-/* Header */
-
-section {
-    padding: 60px 0;
-}
-
-/* Paragraph Styles */
-p {
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
+/* ---------- Header ---------- */
 header {
-    background: #70002e;
+    background: var(--maroon);
+    border-bottom: 4px solid var(--red);
     color: #fff;
-    padding-top: 30px;
-    min-height: 70px;
-    border-bottom: #f9423a 5px solid;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 100;
+    font-family: var(--sans);
 }
-
-header a {
-    color: #fff;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 16px;
-}
-
-header ul {
-    padding: 0;
-    list-style: none;
-}
-
-header li {
-    display: inline;
-    white-space: nowrap;
-    padding: 0 20px 0 20px;
-}
-
-header #branding {
-    float: left;
-}
-
-header #branding h1 {
-    margin: 0;
-}
-
-header nav {
-    float: right;
-    margin-top: 10px;
-}
-
-/* Showcase */
-#showcase {
-    min-height: 400px;
-    background: #efe8d4;
-    text-align: center;
-    color: #ed8b00;
-}
-
-#showcase h1 {
-    margin-top: 100px;
-    font-size: 55px;
-    margin-bottom: 10px;
-}
-
-#showcase p {
-    font-size: 20px;
-}
-
-/* Content Sections */
-section {
-    padding: 20px 0;
-}
-
-/* Footer */
-footer {
-    background: #70002e;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-    margin-top: 40px;
-}
-
-/* Buttons */
-.button {
-    display: inline-block;
-    color: #fff;
-    background: #ed8b00;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s, transform 0.3s;
-}
-
-.button:hover {
-    background: #ff6347; /* Tomato */
-    transform: translateY(-3px);
-}
-
-.projects {
+header .container {
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
     justify-content: space-between;
+    gap: 6px 24px;
+    padding: 18px 0 16px;
 }
+#branding { font-size: 1.35rem; font-weight: 700; letter-spacing: .01em; }
+#branding a { color: #fff; text-decoration: none; }
+header nav ul { display: flex; flex-wrap: wrap; gap: 4px 22px; list-style: none; }
+header nav a { color: #f4dfe6; text-decoration: none; font-size: .95rem; }
+header nav a:hover, header nav a[aria-current="page"] { color: #fff; text-decoration: underline; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
 
-.project-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: calc(33% - 20px);
-    margin-bottom: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
-    margin-top: 20px;
-    overflow: hidden;
-    transition: transform 0.2s;
+main { flex: 1; padding: 56px 0 72px; }
+/* The standings page keeps its old <section> wrapper. */
+body > section { flex: 1; padding: 40px 0 64px; }
+
+/* ---------- Type ---------- */
+h1 { font-size: 2.6rem; line-height: 1.15; letter-spacing: -.01em; margin-bottom: 18px; }
+h2 {
+    font-size: 1.05rem; font-family: var(--sans); font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--maroon);
+    margin: 56px 0 20px; padding-top: 14px; border-top: 1px solid var(--rule);
 }
+h3 { font-size: 1.2rem; line-height: 1.3; margin-bottom: 4px; }
+p { margin-bottom: 16px; }
+.lede { font-size: 1.2rem; }
+.meta { font-family: var(--sans); font-size: .85rem; color: var(--muted); margin-bottom: 8px; }
+.links { font-family: var(--sans); font-size: .95rem; display: flex; flex-wrap: wrap; gap: 6px 20px; }
 
-.project-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+/* ---------- Lists of things (research, projects, jobs) ---------- */
+.entry { margin-bottom: 32px; }
+.entry p:last-child { margin-bottom: 0; }
+.entry ul { padding-left: 1.2em; }
+.entry li { margin-bottom: 6px; }
+
+/* A project: screenshot on the left, words on the right. */
+.project {
+    display: grid; grid-template-columns: 18rem minmax(0, 1fr); gap: 28px; align-items: start;
+    padding: 28px 0; border-bottom: 1px solid var(--rule);
 }
+.project:last-child { border-bottom: 0; }
+.project img { border: 1px solid var(--rule); background: var(--paper); aspect-ratio: 16 / 10; width: 100%; object-fit: cover; object-position: top; }
+.project h3 { margin-bottom: 8px; }
+.project .tech { font-family: var(--sans); font-size: .8rem; color: var(--muted); margin-bottom: 10px; }
+.project.featured { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
 
-.project-card:hover {
-    transform: scale(1.05);
+/* Small print in a two-column CV row: dates on the left. */
+.cv-row { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 4px 24px; margin-bottom: 28px; }
+.cv-row .when { font-family: var(--sans); font-size: .9rem; color: var(--muted); padding-top: 3px; }
+.cv-row p, .cv-row ul { margin-bottom: 8px; }
+.cv-row ul { padding-left: 1.2em; }
+dl.skills { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 8px 24px; }
+dl.skills dt { font-family: var(--sans); font-size: .9rem; color: var(--muted); padding-top: 2px; }
+
+/* ---------- Footer ---------- */
+footer {
+    background: var(--maroon);
+    color: #f4dfe6;
+    font-family: var(--sans);
+    font-size: .9rem;
+    border-top: 4px solid var(--red);
 }
+footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 22px 0; }
+footer a { color: #fff; }
+footer a:hover { color: #ffd6d4; }
+footer .links { font-size: .9rem; gap: 4px 16px; }
 
-.project-card h2 {
-    padding: 10px;
-}
-
-.project-card p {
-    padding: 10px 10px 10px 10px;
-}
-
-.project-card .button {
-    margin: 10px;
-}
-
-/* Form Styles */
-form {
-    background: #fff;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-form input, form textarea {
-    width: 100%;
-    padding: 5px;
-    margin-bottom: 10px;
-}
-
-header nav ul li a:hover {
-    color: #f9423a;
-}
-
-/* Media Queries */
-@media(max-width: 768px) {
-    header #branding,
-    header nav,
-    header nav li {
-        float: none;
-        text-align: center;
-        display: block;
-    }
-
-    #showcase h1 {
-        margin-top: 40px;
-    }
+/* ---------- Phones ---------- */
+@media (max-width: 700px) {
+    body { font-size: 17px; }
+    h1 { font-size: 2rem; }
+    main { padding: 36px 0 56px; }
+    .project, .project.featured, .cv-row, dl.skills { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .cv-row { gap: 2px; }
+    dl.skills { gap: 2px; }
+    dl.skills dd { margin-bottom: 10px; }
 }

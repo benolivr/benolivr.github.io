@@ -1,108 +1,146 @@
-<!-- projects.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Projects | Ben Oliver</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Projects · Ben Oliver</title>
+    <meta name="description" content="Projects by Ben Oliver: a hockey career simulator, NHL standings, D3 visualizations and Django apps.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2370002e'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle'%3EBO%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container">
-            <div id="branding">
-                <h1>Ben Oliver</h1>
-            </div>
+            <div id="branding"><a href="index.html">Ben Oliver</a></div>
             <nav>
                 <ul>
-                    <li><a href="index.html">Welcome</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="experience.html">Experience</a></li>
-                    <li class="current"><a href="projects.html">Projects</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="nhl-standings.html">NHL</a></li>
-                    <li><a href="hockey-game/">Hockey Game</a></li>
+                    <li><a href="index.html#research">Research</a></li>
+                    <li><a href="projects.html" aria-current="page">Projects</a></li>
+                    <li><a href="cv.html">CV</a></li>
+                    <li><a href="mailto:benoliver47@gmail.com">Email</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <section>
+    <main>
         <div class="container">
-            <h1>Projects</h1>
-            <div class="projects">
-                <div class="project-card">
-                    <img src="images/tornadoes-color.png" alt="Tornadoes Exploration">
-                    <h2>Tornadoes Exploration</h2>
-                    <p>JavaScript and D3 notebook examining tornadoes in the US 1950-2021.</p>
-                    <a href="https://observablehq.com/@ben-oliver/trivariate-geographic-transforms" target="_blank" class="button">View on Observable</a>
+            <div class="prose">
+                <h1>Projects</h1>
+                <p class="lede">Things I've built, in and out of class. Most of the code is on <a href="https://github.com/benolivr">GitHub</a>.</p>
+            </div>
+
+            <h2>Hockey</h2>
+            <div class="project">
+                <a href="hockey-game/"><img src="images/thumbs/hockey-game.webp" alt="The Hockey Career Simulator's career screen" width="960" height="600" loading="lazy"></a>
+                <div>
+                    <h3><a href="hockey-game/">Hockey Career Simulator</a></h3>
+                    <p class="tech">JavaScript · no framework · runs entirely in the browser</p>
+                    <p>Create a player at 16 and play out a whole career: junior hockey, the draft, game-by-game NHL seasons, contracts, injuries, international tournaments and, if it goes well, the Hall of Fame.</p>
+                    <p class="links"><a href="hockey-game/">Play it</a></p>
                 </div>
-                <div class="project-card">
-                    <img src="images/cyclone.png" alt="Global Cyclone Frequency and Mortality">
-                    <h2>Global Cyclone Frequency and Mortality</h2>
-                    <p>JavaScript and D3 notebook examining global cyclone frequency and mortality using raster data (.tiff/.geotiff manipulation).</p>
-                    <a href="https://observablehq.com/@ben-oliver/project-3-raster-data" target="_blank" class="button">View on Observable</a>
+            </div>
+            <div class="project">
+                <a href="nhl-standings.html"><img src="images/thumbs/nhl-standings.webp" alt="NHL standings recalculated under a 3-2-1-0 points system" width="960" height="609" loading="lazy"></a>
+                <div>
+                    <h3><a href="nhl-standings.html">NHL standings, 3-2-1-0</a></h3>
+                    <p class="tech">JavaScript · Google Apps Script</p>
+                    <p>The current NHL standings recalculated with three points for a regulation win, and how each team would move compared with the real 2-2-1-0 table. A scheduled Apps Script job keeps the data current.</p>
+                    <p class="links"><a href="nhl-standings.html">See the standings</a></p>
                 </div>
-                <div class="project-card">
-                    <img src="images/starwars.png" alt="Star Wars Episode 1 Interactions Exploration">
-                    <h2>Star Wars Episode 1 Interactions</h2>
-                    <p>JavaScript and D3 notebook examining relationships between characters and their species in <em>Star Wars</em> Episode 1.</p>
-                    <a href="https://observablehq.com/@ben-oliver/project-4-the-network" target="_blank" class="button">View on Observable</a>
+            </div>
+
+            <h2>Maps and data visualization</h2>
+            <div class="project">
+                <a href="montana-deer-collisions/"><img src="images/thumbs/montana-deer-collisions.webp" alt="Map of deer-vehicle collision density on Montana roads" width="960" height="679" loading="lazy"></a>
+                <div>
+                    <h3><a href="montana-deer-collisions/">Deer-vehicle collisions and river corridors in Montana</a></h3>
+                    <p class="tech">Python · GeoPandas · QGIS</p>
+                    <p>Collision density along every road in Montana from carcass-removal records (2016-2025), compared with distance to rivers and riparian habitat. On highways, the worst stretches sit far closer to water than the rest.</p>
+                    <p class="links"><a href="montana-deer-collisions/">See the maps</a> <a href="https://github.com/benolivr/montana-deer-collisions">Code on GitHub</a></p>
                 </div>
-                <div class="project-card">
-                    <img src="images/bikeshare.png" alt="Capital Bikeshare Exploration">
-                    <h2>Capital Bikeshare Usage</h2>
-                    <p>JavaScript and leaflet notebook examining daily/hourly usage of Capital Bikeshare in Washington D.C. in June 2024</p>
-                    <a href="https://observablehq.com/@ben-oliver/project-5-higher-dimensional-data" target="_blank" class="button">View on Observable</a>
+            </div>
+            <div class="project">
+                <a href="https://observablehq.com/@ben-oliver/trivariate-geographic-transforms"><img src="images/thumbs/tornadoes-color.webp" alt="Map of US tornadoes, 1950-2021" width="960" height="602" loading="lazy"></a>
+                <div>
+                    <h3><a href="https://observablehq.com/@ben-oliver/trivariate-geographic-transforms">US tornadoes, 1950-2021</a></h3>
+                    <p class="tech">JavaScript · D3 · Observable</p>
+                    <p>Where and how often tornadoes hit the US, 1950-2021.</p>
+                    <p class="links"><a href="https://observablehq.com/@ben-oliver/trivariate-geographic-transforms">Open the notebook</a></p>
                 </div>
-                <div class="project-card">
-                    <img src="images/tutoring-app.png" alt="Tutoring App">
-                    <h2>Tutoring App</h2>
-                    <p>Tutoring app where tutors can sign up and post availability hours, using environment variables and custom filters.</p>
-                    <a href="https://github.com/benolivr/tutoring-app" target="_blank" class="button">View on Github</a>
+            </div>
+            <div class="project">
+                <a href="https://observablehq.com/@ben-oliver/project-3-raster-data"><img src="images/thumbs/cyclone.webp" alt="Map of global cyclone frequency and mortality" width="960" height="651" loading="lazy"></a>
+                <div>
+                    <h3><a href="https://observablehq.com/@ben-oliver/project-3-raster-data">Global cyclone frequency and mortality</a></h3>
+                    <p class="tech">JavaScript · D3 · Observable · GeoTIFF</p>
+                    <p>Cyclone frequency and deaths worldwide, drawn from raster (GeoTIFF) data.</p>
+                    <p class="links"><a href="https://observablehq.com/@ben-oliver/project-3-raster-data">Open the notebook</a></p>
                 </div>
-                <div class="project-card"> 
-                    <img src="images/newspaper-project-final.png" alt="Newspaper Project v2">
-                    <h2>Newspaper Project v2</h2>
-                    <p>Finished newspaper project with user accounts, authentication, and bootstrap CSS/JavaScript, as well as "django-hijack" library</p>
-                    <a href="https://github.com/benolivr/newspaper-app-final" target="_blank" class="button">View on GitHub</a>
+            </div>
+            <div class="project">
+                <a href="https://observablehq.com/@ben-oliver/project-4-the-network"><img src="images/thumbs/starwars.webp" alt="Network of character interactions in Star Wars Episode I" width="960" height="776" loading="lazy"></a>
+                <div>
+                    <h3><a href="https://observablehq.com/@ben-oliver/project-4-the-network">Star Wars Episode I, as a network</a></h3>
+                    <p class="tech">JavaScript · D3 · Observable</p>
+                    <p>The relationships between characters in <em>The Phantom Menace</em>, and between their species.</p>
+                    <p class="links"><a href="https://observablehq.com/@ben-oliver/project-4-the-network">Open the notebook</a></p>
                 </div>
-                <div class="project-card">
-                    <img src="images/soundclouded.png" alt="SoundClouded">
-                    <h2>SoundClouded</h2>
-                    <p>Web app that gives you Spotify recommendations based upon the current weather at your location</p>
-                    <a href="https://github.com/Hypertrophy24/SoundClouded " target="_blank" class="button">View on Github</a>
+            </div>
+            <div class="project">
+                <a href="https://observablehq.com/@ben-oliver/project-5-higher-dimensional-data"><img src="images/thumbs/bikeshare.webp" alt="Map of Capital Bikeshare usage in Washington, D.C." width="960" height="696" loading="lazy"></a>
+                <div>
+                    <h3><a href="https://observablehq.com/@ben-oliver/project-5-higher-dimensional-data">Capital Bikeshare, June 2024</a></h3>
+                    <p class="tech">JavaScript · Leaflet · Observable</p>
+                    <p>Daily and hourly Capital Bikeshare use across Washington, D.C. in June 2024.</p>
+                    <p class="links"><a href="https://observablehq.com/@ben-oliver/project-5-higher-dimensional-data">Open the notebook</a></p>
                 </div>
-                <div class="project-card">
-                    <img src="images/nhl-standings.png" alt="NHL Standings Dashboard">
-                    <h2>NHL Standings Dashboard</h2>
-                    <p>NHL standings under 3-2-1-0 format and comparisons to current 2-2-1-0 format. Uses Google Scripts for real-time data fetching.</p>
-                    <a href="nhl-standings.html" class="button">Open Standings</a>
+            </div>
+
+            <h2>Web apps</h2>
+            <div class="project">
+                <a href="https://github.com/Hypertrophy24/SoundClouded"><img src="images/thumbs/soundclouded.webp" alt="SoundClouded's home page" width="960" height="496" loading="lazy"></a>
+                <div>
+                    <h3><a href="https://github.com/Hypertrophy24/SoundClouded">SoundClouded</a></h3>
+                    <p class="tech">Web app · Spotify</p>
+                    <p>Spotify recommendations based on the weather where you are right now.</p>
+                    <p class="links"><a href="https://github.com/Hypertrophy24/SoundClouded">Source on GitHub</a></p>
                 </div>
-                <div class="project-card">
-                    <img src="images/hockey-game.png" alt="Hockey Career Simulator">
-                    <h2>Hockey Career Simulator</h2>
-                    <p>Browser game where you create a player at 16 and live a whole career: junior hockey, the draft, a game-by-game NHL season, contracts, injuries, international tournaments and the Hall of Fame.</p>
-                    <a href="hockey-game/" class="button">Play the Game</a>
+            </div>
+            <div class="project">
+                <a href="https://github.com/benolivr/newspaper-app-final"><img src="images/thumbs/newspaper-project-final.webp" alt="The newspaper app's article list" width="960" height="495" loading="lazy"></a>
+                <div>
+                    <h3><a href="https://github.com/benolivr/newspaper-app-final">Newspaper app</a></h3>
+                    <p class="tech">Python · Django · Bootstrap</p>
+                    <p>A newspaper site with user accounts and authentication, plus django-hijack so admins can view the site as another user.</p>
+                    <p class="links"><a href="https://github.com/benolivr/newspaper-app-final">Source on GitHub</a></p>
+                </div>
+            </div>
+            <div class="project">
+                <a href="https://github.com/benolivr/tutoring-app"><img src="images/thumbs/tutoring-app.webp" alt="The tutoring app's availability page" width="960" height="587" loading="lazy"></a>
+                <div>
+                    <h3><a href="https://github.com/benolivr/tutoring-app">Tutoring app</a></h3>
+                    <p class="tech">Python · Django</p>
+                    <p>Tutors sign up and post the hours they're available, using environment variables and custom filters.</p>
+                    <p class="links"><a href="https://github.com/benolivr/tutoring-app">Source on GitHub</a></p>
                 </div>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- Footer -->
     <footer>
-        <p>Ben Oliver | 2026</p>
-        <div class="social-icons">
-            <a href="https://github.com/benolivr" target="_blank"><img src="images/github-icon.png" alt="GitHub" style="width:30px;height:30px;"></a>
-            <a href="https://discordapp.com/users/171664409242894336" target="_blank"><img src="images/discord.png" alt="Discord" style="width:30px;height:30px;"></a>
-            <a href="https://twitter.com/__duk" target="_blank"><img src="images/twitter-icon.png" alt="Twitter" style="width:30px;height:30px;"></a>
-            <a href="https://open.spotify.com/user/formerly_spicy" target="_blank"><img src="images/spotify-icon.webp" alt="Spotify" style="width:30px;height:30px;"></a>
-            <a href="https://steamcommunity.com/id/duk_" target="_blank"><img src="images/steam-icon.png" alt="Steam" style="width:30px;height:30px;"></a>
-            <a href="https://twitch.tv/theduk" target="_blank"><img src="images/twitch-icon.png" alt="Twitch" style="width:30px;height:30px;"></a>
-            <!-- Add more as needed -->
+        <div class="container">
+            <span>Ben Oliver · Missoula, Montana</span>
+            <span class="links">
+                <a href="mailto:benoliver47@gmail.com">Email</a>
+                <a href="https://github.com/benolivr">GitHub</a>
+                <a href="https://www.linkedin.com/in/benolivr/">LinkedIn</a>
+                <a href="https://twitter.com/__duk">Twitter</a>
+                <a href="https://steamcommunity.com/id/duk_">Steam</a>
+                <a href="https://open.spotify.com/user/formerly_spicy">Spotify</a>
+                <a href="https://discordapp.com/users/171664409242894336">Discord</a>
+            </span>
         </div>
     </footer>
 </body>
 </html>
-        
