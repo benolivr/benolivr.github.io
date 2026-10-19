@@ -249,6 +249,7 @@
 				<button class="tab-btn" role="tab" aria-selected="false" aria-controls="conference-panel" id="conference-tab" data-tab="conference-panel">Conference</button>
 				<button class="tab-btn" role="tab" aria-selected="false" aria-controls="division-panel" id="division-tab" data-tab="division-panel">Division</button>
 				<button class="tab-btn" role="tab" aria-selected="false" aria-controls="comparison-panel" id="comparison-tab" data-tab="comparison-panel">System Delta</button>
+				<button class="tab-btn" role="tab" aria-selected="false" aria-controls="ethics-panel" id="ethics-tab" data-tab="ethics-panel">Ethics</button>
 			</div>
 
 			<div id="loading-state" class="standings-loading">Loading standings from standings.json...</div>
@@ -258,6 +259,7 @@
 			<div id="conference-panel" class="tab-panel" role="tabpanel" aria-labelledby="conference-tab"></div>
 			<div id="division-panel" class="tab-panel" role="tabpanel" aria-labelledby="division-tab"></div>
 			<div id="comparison-panel" class="tab-panel" role="tabpanel" aria-labelledby="comparison-tab"></div>
+			<div id="ethics-panel" class="tab-panel" role="tabpanel" aria-labelledby="ethics-tab"></div>
 		</div>
 	</section>
 
@@ -320,7 +322,8 @@
 				division: team.divisionAbbrev,
 				conferenceName: team.conferenceName,
 				divisionName: team.divisionName,
-				teamName: team.teamName && team.teamName.default ? team.teamName.default : "Unknown Team",
+				// ponytail: Apps Script writes "Montr?al"; fix it there to drop this
+				teamName: team.teamName && team.teamName.default ? team.teamName.default.replace("Montr?al", "Montréal") : "Unknown Team",
 				teamAbbrev: team.teamAbbrev && team.teamAbbrev.default ? team.teamAbbrev.default : "---",
 				teamLogo: team.teamLogo || ""
 			};
@@ -620,11 +623,37 @@
 			panel.innerHTML = html;
 		}
 
+		function renderEthics(teams) {
+			const panel = document.getElementById("ethics-panel");
+			const rows = teams.map((team) => ({
+				...team,
+				otShare: team.gamesPlayed > 0 ? (team.otSoWins + team.otSoLosses) / team.gamesPlayed * 100 : 0
+			}));
+			const byShare = (a, b) => a.otShare - b.otShare || a.teamName.localeCompare(b.teamName);
+			const table = (list) => {
+				let html = "<div class=\"table-wrap\"><table><thead><tr><th>Team</th><th>GP</th><th>OT/SO W</th><th>OT/SO L</th><th>OT/SO %</th></tr></thead><tbody>";
+				list.forEach((team) => {
+					html += "<tr><td><div class=\"team-cell\">" +
+						(team.teamLogo ? "<img class=\"team-logo\" src=\"" + team.teamLogo + "\" alt=\"" + team.teamAbbrev + " logo\">" : "") +
+						"<span>" + team.teamName + " (" + team.teamAbbrev + ")</span></div></td>";
+					html += "<td>" + team.gamesPlayed + "</td><td>" + team.otSoWins + "</td><td>" + team.otSoLosses + "</td><td>" + team.otShare.toFixed(1) + "%</td></tr>";
+				});
+				return html + "</tbody></table></div>";
+			};
+			const asc = [...rows].sort(byShare);
+			const desc = [...rows].sort((a, b) => byShare(b, a));
+			panel.innerHTML =
+				"<p>Share of games decided in OT/shootout. Fewer loser points taken (and handed out) = more ethical.</p>" +
+				"<h2 class=\"panel-group-title\">Most Ethical Teams</h2>" + table(asc.slice(0, 5)) +
+				"<h2 class=\"panel-group-title\">Least Ethical Teams</h2>" + table(desc.slice(0, 5));
+		}
+
 		function renderAllPanels() {
 			renderOverall(standingsTeams);
 			renderConference(standingsTeams);
 			renderDivision(standingsTeams);
 			renderSystemDelta(standingsTeams);
+			renderEthics(standingsTeams);
 		}
 
 		function toggleSort(panelKey, sortKey) {
