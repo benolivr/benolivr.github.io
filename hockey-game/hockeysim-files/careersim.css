@@ -535,6 +535,10 @@
 
 .opt-kicker { font-size:.7rem; font-weight:700; color:var(--fg-mute);
               text-transform:uppercase; letter-spacing:.06em; }
+/* A wheel option that can flip your archetype (see markArchetype) */
+.opt.opt-flip { border-color:color-mix(in srgb, var(--accent) 55%, transparent); }
+.opt-arch { align-self:center; font-size:.66rem; font-weight:800; color:var(--accent);
+            border:1px solid color-mix(in srgb, var(--accent) 45%, transparent); border-radius:999px; padding:1px 7px; white-space:nowrap; }
 .opt-name { font-size:.78rem; font-weight:800; line-height:1.15;
             overflow:hidden; text-overflow:ellipsis; }
 .opt-league { display:flex; align-items:center; justify-content:center; gap:4px;
