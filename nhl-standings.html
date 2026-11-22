@@ -32,7 +32,43 @@
 
 		.standings-subtitle {
 			color: #5a5a5a;
+			margin-bottom: 0;
+		}
+
+		.standings-meta {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 8px 14px;
 			margin-bottom: 18px;
+		}
+
+		.refresh-btn {
+			border: 1px solid #70002e;
+			background: #fff;
+			color: #70002e;
+			padding: 5px 12px;
+			border-radius: 999px;
+			cursor: pointer;
+			font: inherit;
+			font-size: 0.9rem;
+			font-weight: bold;
+		}
+
+		.refresh-btn:hover:not(:disabled),
+		.refresh-btn:focus-visible {
+			background: #70002e;
+			color: #fff;
+		}
+
+		.refresh-btn:disabled {
+			opacity: 0.6;
+			cursor: progress;
+		}
+
+		.refresh-status {
+			color: #5a5a5a;
+			font-size: 0.9rem;
 		}
 
 		.points-legend {
@@ -243,7 +279,11 @@
 	<section>
 		<div class="container standings-shell">
 			<h1 class="standings-title">NHL Standings</h1>
-			<p class="standings-subtitle" id="standings-date">Loading standings date...</p>
+			<div class="standings-meta">
+				<p class="standings-subtitle" id="standings-date">Loading standings date...</p>
+				<button type="button" class="refresh-btn" id="refresh-btn" hidden>Refresh scores</button>
+				<span class="refresh-status" id="refresh-status" role="status" aria-live="polite"></span>
+			</div>
 			<div class="points-legend">
 				<strong>3-2-1-0 System:</strong>
 				3 pts for regulation win, 2 pts for OT/SO win, 1 pt for OT/SO loss, 0 pts for regulation loss.
@@ -723,6 +763,37 @@
 			tableSortingBound = true;
 		}
 
+		// Apps Script web app (Deploy > Web app > /exec URL). Empty hides the Refresh button.
+		const REFRESH_URL = "https://script.google.com/macros/s/AKfycbySksoe-7BSq4ipUNC3emnYonZwHwk5MsfUTnjKv2T7xnxQZC_8TqpnG549oIdPVQIs/exec";
+
+		function applyStandings(data) {
+			const standings = Array.isArray(data.standings) ? data.standings : [];
+			const teams = standings.map(buildTeamRow);
+			const eastWithStatus = markWildCardStatus(teams.filter((t) => t.conference === "E"));
+			const westWithStatus = markWildCardStatus(teams.filter((t) => t.conference === "W"));
+			const byAbbrev3210 = new Map([...eastWithStatus, ...westWithStatus].map((team) => [team.teamAbbrev, team.playoffStatus]));
+
+			const east2210 = markWildCardStatusBySystem(teams.filter((t) => t.conference === "E"), "points2210");
+			const west2210 = markWildCardStatusBySystem(teams.filter((t) => t.conference === "W"), "points2210");
+			const byAbbrev2210 = new Map([...east2210, ...west2210].map((team) => [team.teamAbbrev, team.playoffStatus]));
+
+			const rank3210Map = new Map(sortStandingsBySystem(teams, "points3210").map((team, index) => [team.teamAbbrev, index + 1]));
+			const rank2210Map = new Map(sortStandingsBySystem(teams, "points2210").map((team, index) => [team.teamAbbrev, index + 1]));
+
+			standingsTeams = teams.map((team) => ({
+				...team,
+				playoffStatus: byAbbrev3210.get(team.teamAbbrev) || "out",
+				playoffStatus2210: byAbbrev2210.get(team.teamAbbrev) || "out",
+				rank3210: rank3210Map.get(team.teamAbbrev) || 0,
+				rank2210: rank2210Map.get(team.teamAbbrev) || 0,
+				standingsImprovement: (rank2210Map.get(team.teamAbbrev) || 0) - (rank3210Map.get(team.teamAbbrev) || 0),
+				ptsPctChange: team.ptsPct - team.ptsPct2210
+			}));
+
+			setDateLabel(data.standingsDateTimeUtc || data.date || "");
+			renderAllPanels();
+		}
+
 		async function loadStandings() {
 			const loadingState = document.getElementById("loading-state");
 			const errorState = document.getElementById("error-state");
@@ -733,32 +804,7 @@
 					throw new Error("Unable to load standings.json (HTTP " + response.status + ")");
 				}
 
-				const data = await response.json();
-				const standings = Array.isArray(data.standings) ? data.standings : [];
-				const teams = standings.map(buildTeamRow);
-				const eastWithStatus = markWildCardStatus(teams.filter((t) => t.conference === "E"));
-				const westWithStatus = markWildCardStatus(teams.filter((t) => t.conference === "W"));
-				const byAbbrev3210 = new Map([...eastWithStatus, ...westWithStatus].map((team) => [team.teamAbbrev, team.playoffStatus]));
-
-				const east2210 = markWildCardStatusBySystem(teams.filter((t) => t.conference === "E"), "points2210");
-				const west2210 = markWildCardStatusBySystem(teams.filter((t) => t.conference === "W"), "points2210");
-				const byAbbrev2210 = new Map([...east2210, ...west2210].map((team) => [team.teamAbbrev, team.playoffStatus]));
-
-				const rank3210Map = new Map(sortStandingsBySystem(teams, "points3210").map((team, index) => [team.teamAbbrev, index + 1]));
-				const rank2210Map = new Map(sortStandingsBySystem(teams, "points2210").map((team, index) => [team.teamAbbrev, index + 1]));
-
-				standingsTeams = teams.map((team) => ({
-					...team,
-					playoffStatus: byAbbrev3210.get(team.teamAbbrev) || "out",
-					playoffStatus2210: byAbbrev2210.get(team.teamAbbrev) || "out",
-					rank3210: rank3210Map.get(team.teamAbbrev) || 0,
-					rank2210: rank2210Map.get(team.teamAbbrev) || 0,
-					standingsImprovement: (rank2210Map.get(team.teamAbbrev) || 0) - (rank3210Map.get(team.teamAbbrev) || 0),
-					ptsPctChange: team.ptsPct - team.ptsPct2210
-				}));
-
-				setDateLabel(data.standingsDateTimeUtc || data.date || "");
-				renderAllPanels();
+				applyStandings(await response.json());
 				setupTabs();
 				setupTableSorting();
 				loadingState.style.display = "none";
@@ -768,6 +814,67 @@
 				errorState.textContent = "Could not load standings.json. If you are testing locally, run a static server (for example: python3 -m http.server) and open this page through http://localhost.";
 				console.error(err);
 			}
+		}
+
+		// The script also enforces this cooldown for everyone; this just shows it on the button.
+		const REFRESH_COOLDOWN_MS = 5 * 60 * 1000;
+		const REFRESH_STORAGE_KEY = "standingsLastRefresh";
+		let cooldownTimer = null;
+
+		function getLastRefresh() {
+			try { return Number(localStorage.getItem(REFRESH_STORAGE_KEY)) || 0; } catch (e) { return 0; }
+		}
+
+		function setLastRefresh(time) {
+			try { localStorage.setItem(REFRESH_STORAGE_KEY, String(time)); } catch (e) { /* private mode */ }
+		}
+
+		function updateCooldown() {
+			const button = document.getElementById("refresh-btn");
+			const remaining = getLastRefresh() + REFRESH_COOLDOWN_MS - Date.now();
+			clearTimeout(cooldownTimer);
+			if (remaining <= 0) {
+				button.disabled = false;
+				button.textContent = "Refresh scores";
+				return;
+			}
+			const seconds = Math.ceil(remaining / 1000);
+			button.disabled = true;
+			button.textContent = "Refresh in " + Math.floor(seconds / 60) + ":" + String(seconds % 60).padStart(2, "0");
+			cooldownTimer = setTimeout(updateCooldown, 1000);
+		}
+
+		async function refreshStandings() {
+			const button = document.getElementById("refresh-btn");
+			const status = document.getElementById("refresh-status");
+			if (getLastRefresh() + REFRESH_COOLDOWN_MS > Date.now()) return;
+			button.disabled = true;
+			button.textContent = "Refreshing...";
+			status.textContent = "";
+
+			try {
+				// Plain GET with no custom headers, so the browser sends no CORS preflight.
+				const response = await fetch(REFRESH_URL);
+				const result = await response.json();
+				if (!result.ok || !result.data) {
+					throw new Error(result.error || "Refresh failed");
+				}
+				applyStandings(result.data);
+				setLastRefresh(Date.now());
+				status.textContent = result.refreshed ? "Updated just now." : "Already up to date (refreshed in the last 5 minutes).";
+			} catch (err) {
+				status.textContent = "Couldn't refresh right now. Try again in a minute.";
+				console.error(err);
+			} finally {
+				updateCooldown();
+			}
+		}
+
+		if (REFRESH_URL) {
+			const refreshButton = document.getElementById("refresh-btn");
+			refreshButton.hidden = false;
+			refreshButton.addEventListener("click", refreshStandings);
+			updateCooldown();
 		}
 
 		loadStandings();
