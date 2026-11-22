@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Projects | Ben Oliver</title>
-    <meta name="description" content="Projects by Ben Oliver: a hockey career simulator, NHL standings, D3 visualizations and Django apps.">
+    <meta name="description" content="Projects by Ben Oliver: decoding images from fMRI, Montana deer-collision maps, a hockey career simulator, live 3-2-1-0 NHL standings and D3 visualizations.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Projects | Ben Oliver">
-    <meta property="og:description" content="Projects by Ben Oliver: a hockey career simulator, NHL standings, D3 visualizations and Django apps.">
+    <meta property="og:description" content="Projects by Ben Oliver: decoding images from fMRI, Montana deer-collision maps, a hockey career simulator, live 3-2-1-0 NHL standings and D3 visualizations.">
     <meta property="og:url" content="https://benolivr.github.io/projects.html">
+    <meta property="og:image" content="https://benolivr.github.io/images/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ben Oliver: machine learning for cognitive neuroscience">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2370002e'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle'%3EBO%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
     <header>
@@ -71,16 +76,16 @@
                 <div>
                     <h3><a href="montana-deer-collisions/">Deer-Vehicle Collisions and River Corridors in Montana</a></h3>
                     <p class="tech">Python | GeoPandas | QGIS</p>
-                    <p>Collision density along every road in Montana from carcass-removal records (2016-2025), compared with distance to rivers and riparian habitat. On highways, the worst stretches sit far closer to water than the rest.</p>
+                    <p>Collision density along every road in Montana from carcass-removal records (2016–2025), compared with distance to rivers and riparian habitat. On highways, the worst stretches sit far closer to water than the rest.</p>
                     <p class="links"><a href="montana-deer-collisions/">See the maps</a> <a href="https://github.com/benolivr/montana-deer-collisions">Code on GitHub</a> <a href="https://www.linkedin.com/posts/wildlife-on-the-road-is-a-familiar-concern-ugcPost-7518328110379913216-DbHv/">Featured by UM Computer Science</a></p>
                 </div>
             </div>
             <div class="project">
                 <a href="https://observablehq.com/@ben-oliver/trivariate-geographic-transforms"><img src="images/thumbs/tornadoes-color.webp" alt="Map of US tornadoes, 1950-2021" width="960" height="602" loading="lazy"></a>
                 <div>
-                    <h3><a href="https://observablehq.com/@ben-oliver/trivariate-geographic-transforms">US Tornadoes, 1950-2021</a></h3>
+                    <h3><a href="https://observablehq.com/@ben-oliver/trivariate-geographic-transforms">US Tornadoes, 1950–2021</a></h3>
                     <p class="tech">JavaScript | D3 | Observable</p>
-                    <p>Where and how often tornadoes hit the US, 1950-2021.</p>
+                    <p>Every recorded US tornado from 1950–2021 on one interactive map, filterable by period, with deaths, injuries and counts by strength. The count has risen sharply, but mostly in weak EF0 tornadoes that better detection now catches, and the 2007 switch to the Enhanced Fujita scale muddies any trend in strength.</p>
                     <p class="links"><a href="https://observablehq.com/@ben-oliver/trivariate-geographic-transforms">Open the notebook</a></p>
                 </div>
             </div>
@@ -89,7 +94,7 @@
                 <div>
                     <h3><a href="https://observablehq.com/@ben-oliver/project-3-raster-data">Global Cyclone Frequency and Mortality</a></h3>
                     <p class="tech">JavaScript | D3 | Observable | GeoTIFF</p>
-                    <p>Cyclone frequency and deaths worldwide, drawn from raster (GeoTIFF) data.</p>
+                    <p>Global cyclone frequency and cyclone mortality risk, mapped side by side from SEDAC rasters. The two don't line up: Japan is hit as often as anywhere but has low mortality, while eastern India and Haiti are hit less often but lose far more lives, a gap that tracks human development.</p>
                     <p class="links"><a href="https://observablehq.com/@ben-oliver/project-3-raster-data">Open the notebook</a></p>
                 </div>
             </div>
@@ -98,7 +103,7 @@
                 <div>
                     <h3><a href="https://observablehq.com/@ben-oliver/project-4-the-network">Star Wars Episode I, as a Network</a></h3>
                     <p class="tech">JavaScript | D3 | Observable</p>
-                    <p>The relationships between characters in <em>The Phantom Menace</em>, and between their species.</p>
+                    <p>A force-directed network of which characters in <em>The Phantom Menace</em> speak in the same scenes, with hover highlighting, tooltips and a colorblind-friendly palette that switches between character and species. Colored by species, the film still runs on humans; Jar Jar and R2-D2 are the only big exceptions.</p>
                     <p class="links"><a href="https://observablehq.com/@ben-oliver/project-4-the-network">Open the notebook</a></p>
                 </div>
             </div>
@@ -107,7 +112,7 @@
                 <div>
                     <h3><a href="https://observablehq.com/@ben-oliver/project-5-higher-dimensional-data">Capital Bikeshare, June 2024</a></h3>
                     <p class="tech">JavaScript | Leaflet | Observable</p>
-                    <p>Daily and hourly Capital Bikeshare use across Washington, D.C. in June 2024.</p>
+                    <p>Capital Bikeshare rides across the D.C. area in June 2024, drawn from start to end station, colored by ride length and filterable by time of day. Weekday mornings show commuters flowing from residential areas into business districts; midday and weekends shift to long rides around the National Mall.</p>
                     <p class="links"><a href="https://observablehq.com/@ben-oliver/project-5-higher-dimensional-data">Open the notebook</a></p>
                 </div>
             </div>
@@ -131,24 +136,6 @@
                     <p class="tech">Web app | Spotify</p>
                     <p>Spotify recommendations based on the weather where you are right now.</p>
                     <p class="links"><a href="https://github.com/Hypertrophy24/SoundClouded">Source on GitHub</a></p>
-                </div>
-            </div>
-            <div class="project">
-                <a href="https://github.com/benolivr/newspaper-app-final"><img src="images/thumbs/newspaper-project-final.webp" alt="The newspaper app's article list" width="960" height="495" loading="lazy"></a>
-                <div>
-                    <h3><a href="https://github.com/benolivr/newspaper-app-final">Newspaper App</a></h3>
-                    <p class="tech">Python | Django | Bootstrap</p>
-                    <p>A newspaper site with user accounts and authentication, plus django-hijack so admins can view the site as another user.</p>
-                    <p class="links"><a href="https://github.com/benolivr/newspaper-app-final">Source on GitHub</a></p>
-                </div>
-            </div>
-            <div class="project">
-                <a href="https://github.com/benolivr/tutoring-app"><img src="images/thumbs/tutoring-app.webp" alt="The tutoring app's availability page" width="960" height="587" loading="lazy"></a>
-                <div>
-                    <h3><a href="https://github.com/benolivr/tutoring-app">Tutoring App</a></h3>
-                    <p class="tech">Python | Django</p>
-                    <p>Tutors sign up and post the hours they're available, using environment variables and custom filters.</p>
-                    <p class="links"><a href="https://github.com/benolivr/tutoring-app">Source on GitHub</a></p>
                 </div>
             </div>
         </div>

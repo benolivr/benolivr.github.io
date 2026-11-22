@@ -9,8 +9,13 @@
     <meta property="og:title" content="CV | Ben Oliver">
     <meta property="og:description" content="CV of Ben Oliver: education, experience and skills.">
     <meta property="og:url" content="https://benolivr.github.io/cv.html">
+    <meta property="og:image" content="https://benolivr.github.io/images/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ben Oliver: machine learning for cognitive neuroscience">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2370002e'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle'%3EBO%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
     <header>
@@ -30,11 +35,13 @@
     <main>
         <div class="container">
             <div class="prose">
-                <h1>CV</h1>
+                <h1><span class="screen-only">CV</span><span class="print-only">Ben Oliver</span></h1>
+                <p class="print-only cv-contact">Missoula, Montana | benoliver47@gmail.com | benolivr.github.io | github.com/benolivr | linkedin.com/in/benolivr</p>
+                <p class="links screen-only"><a href="cv.pdf">Download as PDF</a></p>
 
                 <h2>Education</h2>
                 <div class="cv-row">
-                    <div class="when">2026 - 2027</div>
+                    <div class="when">2026–2027</div>
                     <div>
                         <h3>MS, Computer Science</h3>
                         <p class="meta">University of Montana | expected December 2027</p>
@@ -42,7 +49,7 @@
                     </div>
                 </div>
                 <div class="cv-row">
-                    <div class="when">2021 - 2025</div>
+                    <div class="when">2021–2025</div>
                     <div>
                         <h3>BS, Computer Science and Mathematical Sciences</h3>
                         <p class="meta">University of Montana | December 2025 | double major</p>
@@ -52,21 +59,30 @@
 
                 <h2>Research</h2>
                 <div class="cv-row">
-                    <div class="when">2026 - present</div>
+                    <div class="when">2026 – present</div>
                     <div>
                         <h3>Graduate Researcher</h3>
                         <p class="meta"><a href="https://the-brain-lab.github.io/brAIn_lab_website/index.html">Dr. Lucy Owen's lab</a> | University of Montana</p>
                         <ul>
-                            <li>Ported SuperEEG, my advisor's doctoral project, to GPyTorch and modern Python (<a href="https://github.com/benolivr/supereeg-gpyt">supereeg-gpyt</a>), so its Gaussian process models can be built on the GPU.</li>
-                            <li>Developing archetypal analysis as an interpretable model of brain imaging data; co-first author on a manuscript in preparation.</li>
-                            <li>Thesis project: applying archetypal analysis and <a href="https://github.com/ContextLab/timecorr">timecorr</a> to fMRI from trauma-exposed individuals.</li>
+                            <li>Built the analysis pipeline for a first-author paper on multi-subject archetypal analysis (MS-AA) of naturalistic fMRI from 87 participants: fits at every model order in two orientations (up to 700 components, 10 seeds each), participant-held-out decoding, PCA benchmarks and simulations, run at scale on the University of Montana's Hellgate HPC cluster with Slurm and Apptainer.</li>
+                            <li>Released that pipeline as a reproducible, tested package (<a href="https://github.com/the-brAIn-lab/msaa-paper">msaa-paper</a>) with pinned environments and Make targets that rebuild every figure and source table from the archived data.</li>
+                            <li>Ported SuperEEG, my advisor's doctoral project, to GPyTorch and modern Python 3.12 / NumPy 2 (<a href="https://github.com/benolivr/supereeg-gpyt">supereeg-gpyt</a>), so its Gaussian process models build on the GPU, and wrote a converter for files in the old format.</li>
+                            <li>Thesis project: applying archetypal analysis and <a href="https://github.com/ContextLab/timecorr">timecorr</a> to fMRI from trauma-exposed individuals, to look for shared signatures of exposure, resilience and recovery.</li>
                         </ul>
+                    </div>
+                </div>
+
+                <h2>Publications</h2>
+                <div class="cv-row">
+                    <div class="when">In revision</div>
+                    <div>
+                        <p><strong>Oliver, B.</strong>, Shepherd, A., Stone, E., &amp; Owen, L. L. W. Sparse distributed archetypal motifs capture shared network structure in naturalistic fMRI. <em>Network Neuroscience</em> (major revision, 2026). Code: <a href="https://github.com/the-brAIn-lab/msaa-paper">github.com/the-brAIn-lab/msaa-paper</a></p>
                     </div>
                 </div>
 
                 <h2>Experience</h2>
                 <div class="cv-row">
-                    <div class="when">Aug - Dec 2026</div>
+                    <div class="when">Aug – Dec 2026</div>
                     <div>
                         <h3>Teaching Assistant, CSCI 447/547 Machine Learning</h3>
                         <p class="meta">University of Montana | instructor Dr. Lucy Owen | undergraduate and graduate sections</p>
@@ -78,16 +94,16 @@
                     </div>
                 </div>
                 <div class="cv-row">
-                    <div class="when">Jan 2023 - present</div>
+                    <div class="when">Jan 2023 – present</div>
                     <div>
                         <h3>Math Learning Center</h3>
                         <p class="meta">University of Montana | student coordinator from August 2026, tutor from January 2023</p>
-                        <p>The <a href="https://www.umt.edu/math/undergraduate/all-students/free-tutoring.php">Math Learning Center</a> offers free drop-in tutoring, provided by 15-25 tutors and sees about 4,000-4,500 student visits a semester.</p>
+                        <p>The <a href="https://www.umt.edu/math/undergraduate/all-students/free-tutoring.php">Math Learning Center</a> offers free drop-in tutoring, provided by 15–25 tutors and sees about 4,000–4,500 student visits a semester.</p>
                         <p><strong>Student coordinator.</strong> One of three students on the leadership team that runs the center with its faculty director.</p>
                         <ul>
                             <li>Hire, interview, train and schedule tutors, and handle payroll.</li>
                             <li>Plan and deliver required staff trainings, including Title IX, mandatory reporting and fire safety.</li>
-                            <li>Trialed evening drop-in tutoring over Zoom, 7-9 pm.</li>
+                            <li>Trialed evening drop-in tutoring over Zoom, 7–9 pm.</li>
                         </ul>
                         <p><strong>Tutor.</strong> Drop-in tutoring for every 000- and 100-level math course, from prealgebra through Calculus II, plus Calculus III, linear algebra, discrete math and intro to abstract math.</p>
                         <ul>
@@ -96,7 +112,7 @@
                     </div>
                 </div>
                 <div class="cv-row">
-                    <div class="when">Jan 2022 - May 2025</div>
+                    <div class="when">Jan 2022 – May 2025</div>
                     <div>
                         <h3>Griz Esports Broadcasting Intern</h3>
                         <p class="meta">University of Montana | Missoula</p>
@@ -112,7 +128,7 @@
 
                 <h2>Honors</h2>
                 <div class="cv-row">
-                    <div class="when">2024 - 2025</div>
+                    <div class="when">2024–2025</div>
                     <div>
                         <h3>Outstanding Leadership and Service in Inclusive Excellence</h3>
                         <p class="meta">University of Montana | Week of Excellence</p>
@@ -120,7 +136,7 @@
                     </div>
                 </div>
                 <div class="cv-row">
-                    <div class="when">2022 - 2025</div>
+                    <div class="when">2022–2025</div>
                     <div>
                         <h3>Griz Esports Scholarship</h3>
                         <p class="meta">University of Montana | renewed each semester from spring 2022 through fall 2025</p>
@@ -130,10 +146,10 @@
                 <h2>Skills</h2>
                 <dl class="skills">
                     <dt>Languages</dt><dd>Python, JavaScript, Java, HTML and CSS</dd>
-                    <dt>Methods</dt><dd>Gaussian process regression, archetypal analysis, dynamic correlations (timecorr)</dd>
-                    <dt>Libraries</dt><dd>GPyTorch, NumPy, nilearn</dd>
-                    <dt>Web and data</dt><dd>Django, D3, Leaflet, Observable</dd>
-                    <dt>Tools</dt><dd>Git and GitHub, VS Code, OBS</dd>
+                    <dt>Methods</dt><dd>Archetypal analysis, PCA, Gaussian process regression, ridge regression and encoding models, cross-validated decoding, dynamic correlations (timecorr), numerical ODE solvers</dd>
+                    <dt>Libraries</dt><dd>PyTorch and GPyTorch, NumPy, scikit-learn, nilearn, GeoPandas, Matplotlib</dd>
+                    <dt>Web and data</dt><dd>Django, D3, Leaflet, Observable, QGIS</dd>
+                    <dt>Tools</dt><dd>Git and GitHub, uv, Make, Linux, HPC clusters, CUDA GPUs</dd>
                 </dl>
 
                 <h2>Other</h2>
